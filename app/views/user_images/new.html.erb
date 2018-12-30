@@ -1,4 +1,9 @@
-<%= form_for(@user_image) do |f| %>
-  <%= f.text_area :url %>
+<p>adding image to database for <%= @user.username %></p>
+<%= form_for @user_image, url: {action: "create", id: @user.id} do |f| %>
+  <div>
+    <p>url(s)</p>
+    <%= f.text_area :url %>
+  </div>
+
   <%= f.submit "Add" %>
 <% end %>
