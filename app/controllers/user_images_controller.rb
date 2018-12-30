@@ -6,7 +6,13 @@ class UserImagesController < ApplicationController
 
   def create
     @user = User.find(params[:id])
-    @user.user_images.new(user_image_params)
+    #TODO: fix form input
+    @urls = user_image_params[:url].split(',')
+
+    @urls.each do |url|
+      @user.user_images.new({:url => url})
+    end
+
     if @user.save
       redirect_to controller: 'pages', action: 'dashboard', id: @user.id
     else

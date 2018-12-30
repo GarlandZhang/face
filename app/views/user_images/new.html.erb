@@ -1,5 +1,5 @@
 <p>adding image to database for <%= @user.username %></p>
-<%= form_for @user_image, url: {action: "create", id: @user.id} do |f| %>
+<%= form_for @user_image, url: {action: "create", id: @user} do |f| %>
   <div>
     <p>url(s)</p>
     <%= f.text_area :url %>
