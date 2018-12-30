@@ -13,7 +13,7 @@ request['Content-Type'] = 'application/json'
 # Request headers
 request['Ocp-Apim-Subscription-Key'] = 'c48485623e4548bd958b7d526c535fb3'
 # Request body
-request.body = "{\"url\": \"https://scontent.fyyz1-1.fna.fbcdn.net/v/t1.15752-9/48413718_299041400747877_4000777609775415296_n.jpg?_nc_cat=110&_nc_ht=scontent.fyyz1-1.fna&oh=c3fc6e4176ae3a3a8eebbcd736d9104d&oe=5C99686D\"}"
+request.body = "{\"url\": \"https://scontent.fyyz1-1.fna.fbcdn.net/v/t1.15752-9/s2048x2048/49608127_312861969570220_847336084735000576_n.jpg?_nc_cat=109&_nc_ht=scontent.fyyz1-1.fna&oh=06a8479e9deeef82de132c11f41f2f1c&oe=5CD20027\"}"
 
 response = Net::HTTP.start(uri.host, uri.port, :use_ssl => uri.scheme == 'https') do |http|
     http.request(request)

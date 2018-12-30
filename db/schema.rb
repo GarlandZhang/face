@@ -10,7 +10,30 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181230074739) do
+ActiveRecord::Schema.define(version: 20181230215923) do
+
+  create_table "people", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "person_groups", force: :cascade do |t|
+    t.string "name"
+    t.string "azure_id"
+    t.integer "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_person_groups_on_user_id"
+  end
+
+  create_table "tags", force: :cascade do |t|
+    t.integer "user_image_id"
+    t.integer "person_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["person_id"], name: "index_tags_on_person_id"
+    t.index ["user_image_id"], name: "index_tags_on_user_image_id"
+  end
 
   create_table "user_images", force: :cascade do |t|
     t.string "url"

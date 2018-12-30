@@ -5,5 +5,6 @@ class PagesController < ApplicationController
 
   def dashboard
     @user = User.find(params[:id])
+    @images = @user.user_images
   end
 end
