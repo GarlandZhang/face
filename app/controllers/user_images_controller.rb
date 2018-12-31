@@ -34,33 +34,43 @@ class UserImagesController < ApplicationController
     urls.each do |url|
       faces = detect_faces(url)
       puts "Faces detected: #{faces}"
-      group = @user.person_group
-
-      if group.people.size == 0
-        puts "No people in database"
-        faceIds = []
-        faces.each do |face|
-          faceIds << face['faceId']
-        end
-
-        #todo: what if person appears more than once in image?
-        faceIds.each do |faceId|
-          person = add_person(group, faceId)
-          puts "Person created: #{person.name} with personId: #{person.person_id}"
-          detected_face = faces.select{ |detected_face| detected_face['faceId'] == person.name}[0]
-          add_face_to_person(group, person, url, detected_face)
-        end
-
-        if group.save
-          # do something
-        end
-      else
-        puts "At least one person in database"
-        train_person_group(group)
-        identify_person(group, faces, url)
-      end
-      @user.user_images.new({:url => url})
+      user_image = UserImage.new({:url => url, :user_id => @user.id})
+      populate(@user.person_group, user_image, faces)
+      @user.user_images << user_image
     end
+  end
+
+  def populate(group, user_image, faces)
+    if group.people.size == 0
+      puts "No people in database"
+      generate_people_and_add_faces(group, user_image, faces)
+    else
+      puts "At least one person in database"
+      train_person_group(group)
+      identify_person(group, faces, url)
+    end
+  end
+
+  def generate_people_and_add_faces(group, user_image, faces)
+    face_ids = faces.collect { |face| face['faceId']}
+
+    #todo: what if person appears more than once in image?
+    face_ids.each do |face_id|
+      person = add_person(group, face_id)
+      add_person_to_image(person, user_image)
+
+      puts "Person created: #{person.name} with personId: #{person.person_id}"
+      detected_face = faces.select{ |face| face['faceId'] == person.name}[0]
+      add_face_to_person(group, person, url, detected_face)
+    end
+
+    if group.save
+      # do something
+    end
+  end
+
+  def add_person_to_image(person, user_image)
+    user_image.people << person
   end
 
   def post_call_azure(end_point, request_params={}, request_body = "{}")
@@ -123,42 +133,38 @@ class UserImagesController < ApplicationController
   end
 
   def identify_person(group, faces, url)
-    faceIds = []
-    faces.each do |face|
-      faceIds << face['faceId']
-    end
-
+    face_ids = faces.collect { |face| face['faceId']}
     response = ""
 
-    if group.people.size != 0
+    identified_faces = get_identities(group, face_ids)
 
-      identified_faces = JSON.parse(post_call_azure("identify", {},  "{
-      \"personGroupId\": \"#{group.azure_id}\",
-      \"faceIds\": #{faceIds}}"))
-
-      puts "ID'd faces: #{identified_faces}"
-
-      person = nil
-      identified_faces.each do |id_face|
-        puts "ID_face currently: #{id_face}"
-        if id_face['candidates'].size == 0
-          puts "Candidate size is 0"
-          person = add_person(group, id_face['faceId'])
-        else
-          # TODO: use by person id not name cause name can change
-          puts "Candidate size is at least 1"
-          person = Person.find_by_person_id(id_face['candidates'][0]['personId'])
-        end
-        detected_face = faces.select{ |detected_face| detected_face['faceId'] == id_face['faceId']}[0]
-        puts "Detected face with faceId: #{detected_face['faceId']}"
-        add_face_to_person(group, person, url, detected_face)
+    identified_faces.each do |id_face|
+      puts "ID_face currently: #{id_face}"
+      if id_face['candidates'].size == 0
+        puts "Candidate size is 0"
+        person = add_person(group, id_face['faceId'])
+      else
+        # TODO: use by person id not name cause name can change
+        puts "Candidate size is at least 1"
+        person = Person.find_by_person_id(id_face['candidates'][0]['personId'])
       end
+      detected_face = faces.select{ |detected_face| detected_face['faceId'] == id_face['faceId']}[0]
+      puts "Detected face with faceId: #{detected_face['faceId']}"
+      add_face_to_person(group, person, url, detected_face)
     end
 
     if group.save
       # do something
     end
 
+    response
+  end
+
+  def get_identities(group, face_ids)
+    response = JSON.parse(post_call_azure("identify", {},  "{
+      \"personGroupId\": \"#{group.azure_id}\",
+      \"faceIds\": #{face_ids}}"))
+    puts "Response from identifies: #{response}"
     response
   end
 
