@@ -47,7 +47,7 @@ class UserImagesController < ApplicationController
     else
       puts "At least one person in database"
       train_person_group(group)
-      identify_person(group, faces, url)
+      identify_person(group, faces, user_image.url)
     end
   end
 
@@ -61,7 +61,7 @@ class UserImagesController < ApplicationController
 
       puts "Person created: #{person.name} with personId: #{person.person_id}"
       detected_face = faces.select{ |face| face['faceId'] == person.name}[0]
-      add_face_to_person(group, person, url, detected_face)
+      add_face_to_person(group, person, user_image.url, detected_face)
     end
 
     if group.save
