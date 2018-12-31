@@ -1,0 +1,7 @@
+<h1><%= @person.name %></h1>
+<h3>Images</h3>
+<%= @images.each do |image| %>
+  <div>
+    <%= image_tag image.url %>
+  </div>
+<% end %>

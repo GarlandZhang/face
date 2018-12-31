@@ -47,7 +47,8 @@ class UserImagesController < ApplicationController
     else
       puts "At least one person in database"
       train_person_group(group)
-      identify_person(group, faces, user_image.url)
+      person = identify_person(group, faces, user_image.url)
+      add_person_to_image(person, user_image)
     end
   end
 
@@ -62,10 +63,6 @@ class UserImagesController < ApplicationController
       puts "Person created: #{person.name} with personId: #{person.person_id}"
       detected_face = faces.select{ |face| face['faceId'] == person.name}[0]
       add_face_to_person(group, person, user_image.url, detected_face)
-    end
-
-    if group.save
-      # do something
     end
   end
 
@@ -134,10 +131,9 @@ class UserImagesController < ApplicationController
 
   def identify_person(group, faces, url)
     face_ids = faces.collect { |face| face['faceId']}
-    response = ""
 
     identified_faces = get_identities(group, face_ids)
-
+    person = nil
     identified_faces.each do |id_face|
       puts "ID_face currently: #{id_face}"
       if id_face['candidates'].size == 0
@@ -152,12 +148,7 @@ class UserImagesController < ApplicationController
       puts "Detected face with faceId: #{detected_face['faceId']}"
       add_face_to_person(group, person, url, detected_face)
     end
-
-    if group.save
-      # do something
-    end
-
-    response
+    person
   end
 
   def get_identities(group, face_ids)
@@ -174,9 +165,6 @@ class UserImagesController < ApplicationController
     azure_person = get_azure_person(group, azure_added_person['personId'])
     person = Person.new({:name => azure_person['name'], :person_id => azure_person['personId']})
     group.people << person
-    if group.save
-      # do something
-    end
     person
   end
 
