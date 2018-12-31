@@ -17,7 +17,7 @@ ActiveRecord::Schema.define(version: 20181231080640) do
     t.integer "person_group_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "face_id"
+    t.string "person_id"
     t.index ["person_group_id"], name: "index_people_on_person_group_id"
   end
 

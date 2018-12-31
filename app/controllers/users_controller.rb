@@ -6,8 +6,7 @@ class UsersController < ApplicationController
   end
 
   def create
-    @user = User.find(4)
-    #@user = User.new(user_params)
+    @user = User.new(user_params)
 
     #TODO: make sure unique username
 
