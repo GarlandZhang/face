@@ -1,6 +1,6 @@
 require 'net/http'
 
-uri = URI('https://westcentralus.api.cognitive.microsoft.com/face/v1.0/persongroups/banana_split/train')
+uri = URI('https://westcentralus.api.cognitive.microsoft.com/face/v1.0/persongroups/person_group_wogo/train')
 uri.query = URI.encode_www_form({
 })
 

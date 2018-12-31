@@ -6,7 +6,8 @@ class UsersController < ApplicationController
   end
 
   def create
-    @user = User.new(user_params)
+    @user = User.find(4)
+    #@user = User.new(user_params)
 
     #TODO: make sure unique username
 
@@ -25,13 +26,14 @@ class UsersController < ApplicationController
     username = @user.username
     azure_group_id = "person_group_#{username}"
     group_name = "#{username}_image_collection"
+
     create_azure_person_group(azure_group_id, group_name)
     @user.person_group = PersonGroup.new({:azure_id => azure_group_id, :name => group_name})
   end
 
   def create_azure_person_group(azure_group_id, group_name)
 
-    uri = URI("https://westcentralus.api.cognitive.microsoft.com/face/v1.0/persongroups/#{azure_group_id}}")
+    uri = URI("https://westcentralus.api.cognitive.microsoft.com/face/v1.0/persongroups/#{azure_group_id}")
 
     request = Net::HTTP::Put.new(uri.request_uri)
 # Request headers

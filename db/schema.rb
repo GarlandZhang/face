@@ -10,11 +10,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181230215923) do
+ActiveRecord::Schema.define(version: 20181231004950) do
 
   create_table "people", force: :cascade do |t|
+    t.string "name"
+    t.integer "person_group_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["person_group_id"], name: "index_people_on_person_group_id"
   end
 
   create_table "person_groups", force: :cascade do |t|
@@ -24,6 +27,11 @@ ActiveRecord::Schema.define(version: 20181230215923) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_person_groups_on_user_id"
+  end
+
+  create_table "shared_dbs", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "tags", force: :cascade do |t|

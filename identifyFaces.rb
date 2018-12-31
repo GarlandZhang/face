@@ -11,7 +11,7 @@ request['Content-Type'] = 'application/json'
 request['Ocp-Apim-Subscription-Key'] = 'c48485623e4548bd958b7d526c535fb3'
 # Request body
 request.body = "{
-    \"personGroupId\": \"banana_split\",
+    \"personGroupId\": \"person_group_wogo\",
     \"faceIds\": [
         \"9b1f1049-0923-4248-9be3-34a68c03255c\"
     ]}"

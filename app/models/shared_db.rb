@@ -1,0 +1,2 @@
+class SharedDb < ApplicationRecord
+end
