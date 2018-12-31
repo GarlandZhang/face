@@ -35,9 +35,27 @@ class UserImagesController < ApplicationController
       faces = detect_faces(url)
       group = @user.person_group
 
-      train_person_group(group)
-      identify_person(group, faces, url)
-      #@user.user_images.new({:url => url})
+      if group.people.size == 0
+        faceIds = []
+        faces.each do |face|
+          faceIds << face['faceId']
+        end
+
+        #todo: what if person appears more than once in image?
+        faceIds.each do |faceId|
+          person = add_person(group, faceId)
+          detected_face = faces.select{ |detected_face| detected_face['faceId'] == person.name}
+          add_face_to_person(group, person, url, detected_face)
+        end
+
+        if group.save
+          # do something
+        end
+      else
+        train_person_group(group)
+        identify_person(group, faces, url)
+      end
+      @user.user_images.new({:url => url})
     end
   end
 
@@ -124,12 +142,6 @@ class UserImagesController < ApplicationController
         end
         detected_face = faces.select{ |detected_face| detected_face['faceId'] == face['faceId']}[0]
         add_face_to_person(group, person, url, detected_face)
-      end
-
-    else
-      #todo: what if person appears more than once in image?
-      faceIds.each do |faceId|
-        add_person(group, faceId)
       end
     end
 
