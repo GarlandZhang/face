@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181231080640) do
+ActiveRecord::Schema.define(version: 20190101224119) do
 
   create_table "people", force: :cascade do |t|
     t.string "name"
@@ -18,6 +18,7 @@ ActiveRecord::Schema.define(version: 20181231080640) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "person_id"
+    t.string "last_face_id"
     t.index ["person_group_id"], name: "index_people_on_person_group_id"
   end
 
@@ -28,6 +29,15 @@ ActiveRecord::Schema.define(version: 20181231080640) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_person_groups_on_user_id"
+  end
+
+  create_table "relationships", force: :cascade do |t|
+    t.integer "person_id"
+    t.integer "friend_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["friend_id"], name: "index_relationships_on_friend_id"
+    t.index ["person_id"], name: "index_relationships_on_person_id"
   end
 
   create_table "shared_dbs", force: :cascade do |t|

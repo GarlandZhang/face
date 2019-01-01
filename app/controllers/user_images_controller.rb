@@ -41,6 +41,12 @@ class UserImagesController < ApplicationController
       puts "Faces detected: #{faces}"
       user_image = UserImage.new({:url => url, :user_id => @user.id})
       populate(@user.person_group, user_image, faces)
+
+      if user_image.save
+      else
+        puts "ERROR: User Image did not save"
+      end
+
       @user.user_images << user_image
     end
   end
@@ -48,27 +54,70 @@ class UserImagesController < ApplicationController
   def populate(group, user_image, faces)
     if group.people.size == 0
       puts "No people in database"
-      generate_people_and_add_faces(group, user_image, faces)
+      people = add_people(group, faces)
     else
       puts "At least one person in database"
       train_person_group(group)
-      person = identify_person(group, faces, user_image.url)
+      people = identify_people(group, user_image, faces)
+    end
+    add_people_to_image(people, user_image)
+    add_faces_to_people(group, people, user_image, faces)
+
+    #build_relationships(people)
+  end
+
+  def add_people_to_image(people, user_image)
+    people.each do |person|
       add_person_to_image(person, user_image)
     end
   end
 
-  def generate_people_and_add_faces(group, user_image, faces)
-    face_ids = faces.collect { |face| face['faceId']}
+  def add_faces_to_people(group, people, user_image, faces)
+    people.each do |person|
+      detected_face = faces.select{ |face| face['faceId'] == person.last_face_id}[0]
+      puts "Detected face: #{detected_face}"
+      add_face_to_person(group, person, user_image.url, detected_face)
+    end
+  end
 
+  def build_relationships(people)
+    puts "people: #{people} with size: #{people.size}"
+    people.each do |main|
+      people.each do |friend|
+        puts "main: #{main.person_id} | friend: #{friend.person_id}"
+        if main.id != friend.id && !in_relationship(main,friend)
+          build_relationship(main, friend)
+        end
+      end
+    end
+  end
+
+  def in_relationship(main, friend)
+    (main.relationships.collect { |relationship| relationship.person_id == friend.id || relationship.friend_id == friend.id }).size != 0
+  end
+
+  def build_relationship(main, friend)
+    main.relationships << Relationship.new(:person_id => main.id, :friend_id => friend.id)
+    friend.relationships << Relationship.new(:person_id => friend.id, :friend_id => main.id)
+    if main.save and friend.save
+      puts "saveeed"
+    else
+      puts "ERROR: People could not save"
+    end
+  end
+
+  # todo: extract add_face_to_person from method (modularize)
+  def add_people(group, faces)
+    face_ids = faces.collect { |face| face['faceId']}
+    people = []
     #todo: what if person appears more than once in image?
     face_ids.each do |face_id|
       person = add_person(group, face_id)
-      add_person_to_image(person, user_image)
-
       puts "Person created: #{person.name} with personId: #{person.person_id}"
-      detected_face = faces.select{ |face| face['faceId'] == person.name}[0]
-      add_face_to_person(group, person, user_image.url, detected_face)
+      people << person
     end
+    puts "people added: #{people}"
+    people
   end
 
   def add_person_to_image(person, user_image)
@@ -134,11 +183,12 @@ class UserImagesController < ApplicationController
     get_call_azure("persongroups/#{group.azure_id}/training")
   end
 
-  def identify_person(group, faces, url)
+  def identify_people(group, user_image, faces)
+    url = user_image.url
     face_ids = faces.collect { |face| face['faceId']}
 
     identified_faces = get_identities(group, face_ids)
-    person = nil
+    people = []
     identified_faces.each do |id_face|
       puts "ID_face currently: #{id_face}"
       if id_face['candidates'].size == 0
@@ -148,12 +198,13 @@ class UserImagesController < ApplicationController
         # TODO: use by person id not name cause name can change
         puts "Candidate size is at least 1"
         person = Person.find_by_person_id(id_face['candidates'][0]['personId'])
+        person.last_face_id = id_face['faceId']
       end
-      detected_face = faces.select{ |detected_face| detected_face['faceId'] == id_face['faceId']}[0]
-      puts "Detected face with faceId: #{detected_face['faceId']}"
-      add_face_to_person(group, person, url, detected_face)
+      puts "person added/found: #{person.name}"
+      people << person
+      puts "people id'd and added: #{people}"
     end
-    person
+    people
   end
 
   def get_identities(group, face_ids)
@@ -168,7 +219,7 @@ class UserImagesController < ApplicationController
     puts "Adding person with detected faceId: #{face_id}"
     azure_added_person = add_azure_person(group, face_id)
     azure_person = get_azure_person(group, azure_added_person['personId'])
-    person = Person.new({:name => azure_person['name'], :person_id => azure_person['personId']})
+    person = Person.new({:name => azure_person['name'], :last_face_id => azure_person['name'], :person_id => azure_person['personId']})
     group.people << person
     person
   end
