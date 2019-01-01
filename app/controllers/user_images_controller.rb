@@ -7,6 +7,11 @@ class UserImagesController < ApplicationController
     @user_image = UserImage.new
   end
 
+  def show
+    @user_image = UserImage.find(params[:id])
+    @people = @user_image.people
+  end
+
   def create
     puts "==================================="
     @user = User.find(params[:id])

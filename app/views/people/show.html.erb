@@ -3,5 +3,6 @@
 <%= @images.each do |image| %>
   <div>
     <%= image_tag image.url %>
+    <%= link_to "See more", show_image_url(image) %>
   </div>
 <% end %>

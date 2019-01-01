@@ -1,0 +1,8 @@
+<%= image_tag @user_image.url %>
+<ul>
+  <%= @people.each do |person| %>
+    <li>
+      <%= link_to person.name, person_path(person) %>
+    </li>
+  <% end %>
+</ul>
