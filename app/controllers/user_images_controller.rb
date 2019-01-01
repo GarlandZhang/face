@@ -24,7 +24,7 @@ class UserImagesController < ApplicationController
     if @user.save
       redirect_to controller: 'pages', action: 'dashboard', id: @user.id
     else
-      puts "ERROR"
+      puts @user.errors.full_messages
     end
 
     puts "==================================="
@@ -41,12 +41,6 @@ class UserImagesController < ApplicationController
       puts "Faces detected: #{faces}"
       user_image = UserImage.new({:url => url, :user_id => @user.id})
       populate(@user.person_group, user_image, faces)
-
-      if user_image.save
-      else
-        puts "ERROR: User Image did not save"
-      end
-
       @user.user_images << user_image
     end
   end
@@ -58,12 +52,11 @@ class UserImagesController < ApplicationController
     else
       puts "At least one person in database"
       train_person_group(group)
-      people = identify_people(group, user_image, faces)
+      people = identify_people(group, user_image, faces) # also adds person(s) if no successful candidate
     end
     add_people_to_image(people, user_image)
     add_faces_to_people(group, people, user_image, faces)
-
-    #build_relationships(people)
+    build_relationships(people)
   end
 
   def add_people_to_image(people, user_image)
@@ -84,12 +77,13 @@ class UserImagesController < ApplicationController
     puts "people: #{people} with size: #{people.size}"
     people.each do |main|
       people.each do |friend|
-        puts "main: #{main.person_id} | friend: #{friend.person_id}"
         if main.id != friend.id && !in_relationship(main,friend)
+          puts "Building relatiionship between #{main.id}(#{main.name}) and #{friend.id}(#{friend.name})"
           build_relationship(main, friend)
         end
       end
     end
+    people
   end
 
   def in_relationship(main, friend)
@@ -97,13 +91,8 @@ class UserImagesController < ApplicationController
   end
 
   def build_relationship(main, friend)
-    main.relationships << Relationship.new(:person_id => main.id, :friend_id => friend.id)
-    friend.relationships << Relationship.new(:person_id => friend.id, :friend_id => main.id)
-    if main.save and friend.save
-      puts "saveeed"
-    else
-      puts "ERROR: People could not save"
-    end
+    main.relationships << Relationship.new(:friend_id => friend.id)
+    friend.relationships << Relationship.new(:friend_id => main.id)
   end
 
   # todo: extract add_face_to_person from method (modularize)
