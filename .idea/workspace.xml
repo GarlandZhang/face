@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e531e053-9df4-4485-8735-71da6fab670d" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/controllers/people_controller.rb" beforeDir="false" afterPath="$PROJECT_DIR$/app/controllers/people_controller.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/views/pages/dashboard.html.erb" beforeDir="false" afterPath="$PROJECT_DIR$/app/views/pages/dashboard.html.erb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/views/people/show.html.erb" beforeDir="false" afterPath="$PROJECT_DIR$/app/views/people/show.html.erb" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.bundle/" />
@@ -89,7 +89,7 @@
           <entry key="Rakefile" value="1" />
           <entry key="erb" value="39" />
           <entry key="html" value="1" />
-          <entry key="rb" value="251" />
+          <entry key="rb" value="252" />
           <entry key="sql" value="2" />
         </counts>
       </usages-collector>
@@ -97,22 +97,22 @@
         <counts>
           <entry key="HTML" value="1" />
           <entry key="RHTML" value="39" />
-          <entry key="Ruby" value="252" />
+          <entry key="Ruby" value="253" />
           <entry key="Scratch" value="2" />
           <entry key="UML" value="6" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="erb" value="1848" />
-          <entry key="rb" value="16967" />
+          <entry key="erb" value="2017" />
+          <entry key="rb" value="17739" />
           <entry key="sql" value="29" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="RHTML" value="1848" />
-          <entry key="Ruby" value="16967" />
+          <entry key="RHTML" value="2017" />
+          <entry key="Ruby" value="17739" />
           <entry key="Scratch" value="29" />
         </counts>
       </usages-collector>
@@ -120,20 +120,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/views/people/show.html.erb">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="306">
-              <caret line="18" column="36" selection-start-line="18" selection-start-column="36" selection-end-line="18" selection-end-column="36" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/app/controllers/people_controller.rb">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="329">
-              <caret line="29" column="63" selection-start-line="29" selection-start-column="63" selection-end-line="29" selection-end-column="63" />
+            <state relative-caret-position="272">
+              <caret line="16" column="65" selection-start-line="16" selection-start-column="65" selection-end-line="16" selection-end-column="65" />
             </state>
           </provider>
         </entry>
@@ -179,11 +170,13 @@
       <find>:name =&gt;</find>
       <find>person.face_id</find>
       <find>identify</find>
+      <find>mutual</find>
     </findStrings>
     <replaceStrings>
       <replace>post_call_azure</replace>
       <replace>face_ids</replace>
       <replace>face_id</replace>
+      <replace>second</replace>
     </replaceStrings>
   </component>
   <component name="Git.Settings">
@@ -222,8 +215,8 @@
         <option value="$PROJECT_DIR$/app/controllers/user_images_controller.rb" />
         <option value="$PROJECT_DIR$/app/controllers/pages_controller.rb" />
         <option value="$PROJECT_DIR$/app/views/pages/dashboard.html.erb" />
-        <option value="$PROJECT_DIR$/app/views/people/show.html.erb" />
         <option value="$PROJECT_DIR$/app/controllers/people_controller.rb" />
+        <option value="$PROJECT_DIR$/app/views/people/show.html.erb" />
       </list>
     </option>
   </component>
@@ -358,7 +351,7 @@
     <property name="DefaultHtmlFileTemplate" value="HTML File" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1546390026958" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1546397172753" />
     <property name="database.console.LAST_STATE" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
@@ -491,12 +484,12 @@
       <workItem from="1546068744870" duration="106000" />
       <workItem from="1546068938282" duration="10028000" />
       <workItem from="1546151789580" duration="71087000" />
-      <workItem from="1546379111426" duration="10234000" />
+      <workItem from="1546379111426" duration="12402000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="91455000" />
+    <option name="totallyTimeSpent" value="93623000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -509,6 +502,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.2590604" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -525,7 +519,7 @@
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.32899022" />
       <window_info anchor="bottom" id="Database Changes" order="7" weight="0.32899022" />
-      <window_info anchor="bottom" id="Terminal" order="8" weight="0.42996743" />
+      <window_info anchor="bottom" id="Terminal" order="8" weight="0.42897728" />
       <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.50053304" side_tool="true" weight="0.1921824" />
       <window_info anchor="bottom" id="Version Control" order="10" />
       <window_info anchor="bottom" id="Database Console" order="11" weight="0.32899022" />
@@ -971,17 +965,17 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/views/people/show.html.erb">
+    <entry file="file://$PROJECT_DIR$/app/controllers/people_controller.rb">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="306">
-          <caret line="18" column="36" selection-start-line="18" selection-start-column="36" selection-end-line="18" selection-end-column="36" />
+        <state relative-caret-position="102">
+          <caret line="6" column="35" lean-forward="true" selection-start-line="6" selection-start-column="35" selection-end-line="6" selection-end-column="35" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/controllers/people_controller.rb">
+    <entry file="file://$PROJECT_DIR$/app/views/people/show.html.erb">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="329">
-          <caret line="29" column="63" selection-start-line="29" selection-start-column="63" selection-end-line="29" selection-end-column="63" />
+        <state relative-caret-position="272">
+          <caret line="16" column="65" selection-start-line="16" selection-start-column="65" selection-end-line="16" selection-end-column="65" />
         </state>
       </provider>
     </entry>

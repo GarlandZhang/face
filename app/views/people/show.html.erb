@@ -12,12 +12,17 @@
 <%= @friends.each do |friend| %>
   <p>
     <%= link_to friend.name, person_path(friend) %>
+    <ul>
+      <%= @hash_mutual_friends[friend.id].each do |mutual_friend| %>
+        <%= link_to mutual_friend.name, person_path(mutual_friend) %>
+      <% end %>
+    </ul>
   </p>
 <% end %>
 
-<h4>mutual</h4>
-<%= @mutual_friends.each do |mutual_friend| %>
+<h4>second</h4>
+<%= @second_friends.each do |second_friend| %>
   <p>
-    <%= link_to mutual_friend.name, person_path(mutual_friend) %>
+    <%= link_to second_friend.name, person_path(second_friend) %>
   </p>
 <% end %>
