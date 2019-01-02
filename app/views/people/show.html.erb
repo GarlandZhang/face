@@ -6,3 +6,18 @@
     <%= link_to "See more", show_image_url(image) %>
   </div>
 <% end %>
+
+<h3>Friendships</h3>
+<h4>immediate</h4>
+<%= @friends.each do |friend| %>
+  <p>
+    <%= link_to friend.name, person_path(friend) %>
+  </p>
+<% end %>
+
+<h4>mutual</h4>
+<%= @mutual_friends.each do |mutual_friend| %>
+  <p>
+    <%= link_to mutual_friend.name, person_path(mutual_friend) %>
+  </p>
+<% end %>
