@@ -77,6 +77,7 @@ class UserImagesController < ApplicationController
     puts "people: #{people} with size: #{people.size}"
     people.each do |main|
       people.each do |friend|
+        puts "main: #{main.name}(#id: #{main.id}) and friend: #{friend.name}(#id: #{friend.id})"
         if main.id != friend.id && !in_relationship(main,friend)
           puts "Building relatiionship between #{main.id}(#{main.name}) and #{friend.id}(#{friend.name})"
           build_relationship(main, friend)
@@ -87,7 +88,10 @@ class UserImagesController < ApplicationController
   end
 
   def in_relationship(main, friend)
-    (main.relationships.collect { |relationship| relationship.person_id == friend.id || relationship.friend_id == friend.id }).size != 0
+    !(main.relationships.collect do |relationship|
+      puts "relationship info | person_id: #{relationship.person_id}, friend_id: #{relationship.friend_id}"
+      relationship.friend_id == friend.id
+    end)
   end
 
   def build_relationship(main, friend)
