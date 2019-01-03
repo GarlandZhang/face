@@ -7,6 +7,26 @@ class PeopleController < ApplicationController
     @hash_mutual_friends = get_hashed_mutual_friends(@person)
   end
 
+  def edit
+    @person = Person.find(params[:id])
+  end
+
+  def update
+    @person = Person.find(params[:id])
+    @person.name = person_params[:name]
+    if @person.save
+      redirect_to controller: 'pages', action: 'dashboard', id: User.find(PersonGroup.find(@person.person_group_id).user_id).id
+    else
+      puts "person could not be saved"
+    end
+  end
+
+  private
+
+  def person_params
+    params.require(:person).permit(:name)
+  end
+
   def get_second_friends(person)
     second_friends = []
     person.relationships.each do |relationship|
