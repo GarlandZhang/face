@@ -1,6 +1,7 @@
 <%= link_to "back to dashboard", dashboard_path(@user) %>
 <div>
-  <%= image_tag @avatar.variant(crop: "#{@person.face_width}x#{@person.face_height}+#{@person.face_offset_x}+#{@person.face_offset_y}") %>
+  <%= image_tag @avatar.variant(crop: "#{@person.face_width}x#{@person.face_height}+#{@person.face_offset_x}+#{@person.face_offset_y}",
+                                resize: "100x100") %>
 
   <h1><%= @person.name %></h1>
 </div>
@@ -8,7 +9,7 @@
 <h3>Images</h3>
 <% @images.each do |image| %>
   <div>
-    <%= image_tag image.image %>
+    <%= image_tag image.image.variant(resize: "200x200")%>
     <%= link_to "See more", show_image_url(image) %>
   </div>
 <% end %>
@@ -16,15 +17,15 @@
 <h3>Friendships</h3>
 <h4>immediate</h4>
 <% @friends.each do |friend| %>
-  <p>
+  <div>
     <%= link_to friend.name, person_path(friend) %>
-    <h5>mutual</h5>
     <ul>
+      <h5>mutual</h5>
       <% @hash_mutual_friends[friend.id].each do |mutual_friend| %>
        <p><%= link_to mutual_friend.name, person_path(mutual_friend) %></p>
       <% end %>
     </ul>
-  </p>
+  </div>
 <% end %>
 
 <h4>second</h4>
