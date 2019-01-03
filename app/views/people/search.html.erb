@@ -1,4 +1,4 @@
-<%= @people_found.each do |person| %>
+<% @people_found.each do |person| %>
   <ul>
     <li> <%= link_to(person.name, person_path(person)) %> </li>
   </ul>

@@ -2,7 +2,7 @@
 <h1><%= @person.name %></h1>
 <%= link_to "edit person", edit_person_path(@person) %>
 <h3>Images</h3>
-<%= @images.each do |image| %>
+<% @images.each do |image| %>
   <div>
     <%= image_tag image.image %>
     <%= link_to "See more", show_image_url(image) %>
@@ -11,12 +11,12 @@
 
 <h3>Friendships</h3>
 <h4>immediate</h4>
-<%= @friends.each do |friend| %>
+<% @friends.each do |friend| %>
   <p>
     <%= link_to friend.name, person_path(friend) %>
     <h5>mutual</h5>
     <ul>
-      <%= @hash_mutual_friends[friend.id].each do |mutual_friend| %>
+      <% @hash_mutual_friends[friend.id].each do |mutual_friend| %>
        <p><%= link_to mutual_friend.name, person_path(mutual_friend) %></p>
       <% end %>
     </ul>
@@ -24,7 +24,7 @@
 <% end %>
 
 <h4>second</h4>
-<%= @second_friends.each do |second_friend| %>
+<% @second_friends.each do |second_friend| %>
   <p>
     <%= link_to second_friend.name, person_path(second_friend) %>
   </p>

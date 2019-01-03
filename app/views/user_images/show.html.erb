@@ -1,6 +1,6 @@
-<%= image_tag @user_image.url %>
+<%= image_tag @user_image.image %>
 <ul>
-  <%= @people.each do |person| %>
+  <% @people.each do |person| %>
     <li>
       <%= link_to person.name, person_path(person) %>
     </li>
