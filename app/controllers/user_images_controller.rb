@@ -88,10 +88,10 @@ class UserImagesController < ApplicationController
   end
 
   def in_relationship(main, friend)
-    !(main.relationships.collect do |relationship|
+    (main.relationships.select do |relationship|
       puts "relationship info | person_id: #{relationship.person_id}, friend_id: #{relationship.friend_id}"
       relationship.friend_id == friend.id
-    end)
+    end).size != 0
   end
 
   def build_relationship(main, friend)
