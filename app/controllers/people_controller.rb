@@ -1,6 +1,8 @@
 class PeopleController < ApplicationController
   def show
     @person = Person.find(params[:id])
+    @person_group = PersonGroup.find(@person.person_group_id)
+    @user = User.find(@person_group.user_id)
     @images = @person.user_images
     @friends = @person.relationships.map do |relationship| Person.find(relationship.friend_id) end
     @second_friends = get_second_friends(@person)
@@ -15,7 +17,7 @@ class PeopleController < ApplicationController
     @person = Person.find(params[:id])
     @person.name = person_params[:name]
     if @person.save
-      redirect_to controller: 'pages', action: 'dashboard', id: User.find(PersonGroup.find(@person.person_group_id).user_id).id
+      redirect_to controller: 'pages', action: 'dashboard', id: @user.id
     else
       puts "person could not be saved"
     end
