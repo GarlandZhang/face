@@ -7,7 +7,7 @@ class PeopleController < ApplicationController
     @people_found = @user.person_group.people.select do |person|
       puts "#{person.name}"
       (names.select do |name|
-        person.name.include?(name)
+        person.name.downcase.include?(name)
       end).size() > 0
     end
   end
