@@ -14,9 +14,10 @@
 <%= @friends.each do |friend| %>
   <p>
     <%= link_to friend.name, person_path(friend) %>
+    <h5>mutual</h5>
     <ul>
       <%= @hash_mutual_friends[friend.id].each do |mutual_friend| %>
-        <%= link_to mutual_friend.name, person_path(mutual_friend) %>
+       <p><%= link_to mutual_friend.name, person_path(mutual_friend) %></p>
       <% end %>
     </ul>
   </p>

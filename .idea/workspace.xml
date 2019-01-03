@@ -2,23 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e531e053-9df4-4485-8735-71da6fab670d" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/config/storage.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.detectFace.rb.swp" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Gemfile" beforeDir="false" afterPath="$PROJECT_DIR$/Gemfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Gemfile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/Gemfile.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/addFace.rb" beforeDir="false" afterPath="$PROJECT_DIR$/addFace.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/controllers/user_images_controller.rb" beforeDir="false" afterPath="$PROJECT_DIR$/app/controllers/user_images_controller.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/models/user_image.rb" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/user_image.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/views/pages/dashboard.html.erb" beforeDir="false" afterPath="$PROJECT_DIR$/app/views/pages/dashboard.html.erb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/views/user_images/new.html.erb" beforeDir="false" afterPath="$PROJECT_DIR$/app/views/user_images/new.html.erb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/update" beforeDir="false" afterPath="$PROJECT_DIR$/bin/update" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/environments/development.rb" beforeDir="false" afterPath="$PROJECT_DIR$/config/environments/development.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/routes.rb" beforeDir="false" afterPath="$PROJECT_DIR$/config/routes.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/secrets.yml" beforeDir="false" afterPath="$PROJECT_DIR$/config/secrets.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/db/schema.rb" beforeDir="false" afterPath="$PROJECT_DIR$/db/schema.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/detectFace.rb" beforeDir="false" afterPath="$PROJECT_DIR$/detectFace.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/face.iml" beforeDir="false" afterPath="$PROJECT_DIR$/face.iml" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.bundle/" />
     <ignored path="$PROJECT_DIR$/components/" />
@@ -103,7 +87,7 @@
           <entry key="Gemfile" value="2" />
           <entry key="RailsDependency/User" value="5" />
           <entry key="Rakefile" value="2" />
-          <entry key="erb" value="50" />
+          <entry key="erb" value="51" />
           <entry key="html" value="2" />
           <entry key="rb" value="294" />
           <entry key="sql" value="2" />
@@ -113,7 +97,7 @@
       <usages-collector id="statistics.file.types.open">
         <counts>
           <entry key="HTML" value="2" />
-          <entry key="RHTML" value="50" />
+          <entry key="RHTML" value="51" />
           <entry key="Ruby" value="298" />
           <entry key="Scratch" value="2" />
           <entry key="UML" value="6" />
@@ -123,7 +107,7 @@
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="Gemfile" value="20" />
-          <entry key="erb" value="2974" />
+          <entry key="erb" value="2980" />
           <entry key="rb" value="21415" />
           <entry key="sql" value="29" />
           <entry key="yml" value="3" />
@@ -131,7 +115,7 @@
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="RHTML" value="2974" />
+          <entry key="RHTML" value="2980" />
           <entry key="Ruby" value="21435" />
           <entry key="Scratch" value="29" />
           <entry key="YAML" value="3" />
@@ -141,11 +125,20 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/controllers/user_images_controller.rb">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="710">
+            <state relative-caret-position="761">
               <caret line="186" column="29" selection-start-line="186" selection-start-column="29" selection-end-line="186" selection-end-column="29" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app/views/people/show.html.erb">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-209">
+              <caret line="3" column="5" lean-forward="true" selection-start-line="3" selection-start-column="5" selection-end-line="3" selection-end-column="5" />
             </state>
           </provider>
         </entry>
@@ -225,7 +218,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>people</find>
       <find>add_people</find>
       <find>detected_face</find>
       <find>person.face</find>
@@ -255,6 +247,7 @@
       <find>get_call</find>
       <find>Code:</find>
       <find>Detected face:</find>
+      <find>429</find>
     </findStrings>
     <replaceStrings>
       <replace>post_call_azure</replace>
@@ -297,7 +290,6 @@
         <option value="$PROJECT_DIR$/app/views/people/update.html.erb.html" />
         <option value="$PROJECT_DIR$/app/views/people/update.html.erb" />
         <option value="$PROJECT_DIR$/app/views/people/edit.html.erb" />
-        <option value="$PROJECT_DIR$/app/views/people/show.html.erb" />
         <option value="$PROJECT_DIR$/app/controllers/pages_controller.rb" />
         <option value="$PROJECT_DIR$/app/views/people/search.html.erb" />
         <option value="$PROJECT_DIR$/app/controllers/people_controller.rb" />
@@ -312,6 +304,7 @@
         <option value="$PROJECT_DIR$/addFace.rb" />
         <option value="$PROJECT_DIR$/app/views/pages/dashboard.html.erb" />
         <option value="$PROJECT_DIR$/app/controllers/user_images_controller.rb" />
+        <option value="$PROJECT_DIR$/app/views/people/show.html.erb" />
       </list>
     </option>
   </component>
@@ -451,7 +444,7 @@
     <property name="DefaultHtmlFileTemplate" value="HTML File" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1546501006150" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1546501777563" />
     <property name="database.console.LAST_STATE" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
@@ -585,12 +578,12 @@
       <workItem from="1546068938282" duration="10028000" />
       <workItem from="1546151789580" duration="71087000" />
       <workItem from="1546379111426" duration="14148000" />
-      <workItem from="1546413317181" duration="19482000" />
+      <workItem from="1546413317181" duration="19957000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="114851000" />
+    <option name="totallyTimeSpent" value="115326000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -614,14 +607,14 @@
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32899022" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.49798658" visible="true" weight="0.3224432" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49798658" weight="0.3224432" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.32899022" />
       <window_info anchor="bottom" id="Database Changes" order="7" weight="0.32899022" />
-      <window_info anchor="bottom" id="Terminal" order="8" sideWeight="0.4989339" weight="0.43322477" />
-      <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.50201344" side_tool="true" visible="true" weight="0.3224432" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="8" sideWeight="0.49798658" visible="true" weight="0.4318182" />
+      <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.50201344" side_tool="true" visible="true" weight="0.4318182" />
       <window_info anchor="bottom" id="Version Control" order="10" />
       <window_info anchor="bottom" id="Database Console" order="11" weight="0.32899022" />
       <window_info anchor="bottom" id="Messages" order="12" />
@@ -804,13 +797,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/views/people/show.html.erb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret column="57" lean-forward="true" selection-start-column="57" selection-end-column="57" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$APPLICATION_PLUGINS_DIR$/ruby/rubystubs/rubystubs23/kernel.rb">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="272">
@@ -977,8 +963,15 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/controllers/user_images_controller.rb">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="710">
+        <state relative-caret-position="761">
           <caret line="186" column="29" selection-start-line="186" selection-start-column="29" selection-end-line="186" selection-end-column="29" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/views/people/show.html.erb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-209">
+          <caret line="3" column="5" lean-forward="true" selection-start-line="3" selection-start-column="5" selection-end-line="3" selection-end-column="5" />
         </state>
       </provider>
     </entry>
