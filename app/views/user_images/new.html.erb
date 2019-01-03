@@ -1,9 +1,10 @@
 <p>adding image to database for <%= @user.username %></p>
-<%= form_for @user_image, url: {action: "create", id: @user} do |f| %>
-  <div>
+<%= form_for @user_image, local: true, url: {action: "create", id: @user} do |f| %>
+<!--  <div>
     <p>url(s)</p>
-    <%= f.text_area :url %>
-  </div>
+    <%#= f.text_area :url %>
+  </div>-->
+  <%= f.file_field :images, multiple: true %>
 
   <%= f.submit "Add" %>
 <% end %>

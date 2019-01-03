@@ -1,5 +1,6 @@
 require 'net/http'
 require 'json'
+require 'base64'
 
 class UserImagesController < ApplicationController
   def new
@@ -17,10 +18,11 @@ class UserImagesController < ApplicationController
     @user = User.find(params[:id])
 
     #TODO: fix form input
-    urls = user_image_params[:url].split(',')
-
-    add_user_images(urls)
-
+    #urls = user_image_params[:url].split(',')
+    photos = params[:user_image][:images]
+    #photos.each do |photo| puts photo.read end
+    # add_user_images(urls)
+    add_user_images(photos)
     if @user.save
       redirect_to controller: 'pages', action: 'dashboard', id: @user.id
     else
@@ -32,8 +34,24 @@ class UserImagesController < ApplicationController
 
   private
   def user_image_params
-    params.require(:user_image).permit(:url)
+    params.require(:user_image).permit(:url, :images)
   end
+
+  def add_user_images(photos)
+    photos.each do |photo|
+      faces = detect_faces(photo.read)
+      if faces != []
+        puts "Faces detected: #{faces}"
+        user_image = UserImage.new
+        user_image.image.attach(photo)
+        populate(@user.person_group, user_image, faces)
+        @user.user_images << user_image
+      else
+        puts "No faces detected!"
+      end
+    end
+  end
+=begin
 
   def add_user_images(urls)
     urls.each do |url|
@@ -44,6 +62,7 @@ class UserImagesController < ApplicationController
       @user.user_images << user_image
     end
   end
+=end
 
   def populate(group, user_image, faces)
     if group.people.size == 0
@@ -52,11 +71,15 @@ class UserImagesController < ApplicationController
     else
       puts "At least one person in database"
       train_person_group(group)
-      people = identify_people(group, user_image, faces) # also adds person(s) if no successful candidate
+      people = identify_people(group, faces) # also adds person(s) if no successful candidate
     end
-    add_people_to_image(people, user_image)
-    add_faces_to_people(group, people, user_image, faces)
-    build_relationships(people)
+    if people != []
+      add_people_to_image(people, user_image)
+      add_faces_to_people(group, people, user_image, faces)
+      build_relationships(people)
+    else
+      puts "No people id'd or added!"
+    end
   end
 
   def add_people_to_image(people, user_image)
@@ -69,7 +92,7 @@ class UserImagesController < ApplicationController
     people.each do |person|
       detected_face = faces.select{ |face| face['faceId'] == person.last_face_id}[0]
       puts "Detected face: #{detected_face}"
-      add_face_to_person(group, person, user_image.url, detected_face)
+      add_face_to_person(group, person, user_image.image.download, detected_face)
     end
   end
 
@@ -117,12 +140,12 @@ class UserImagesController < ApplicationController
     user_image.people << person
   end
 
-  def post_call_azure(end_point, request_params={}, request_body = "{}")
+  def post_call_azure(end_point, request_params={}, request_body = "{}", request_type='json')
     uri = URI("https://westcentralus.api.cognitive.microsoft.com/face/v1.0/#{end_point}")
     uri.query = URI.encode_www_form(request_params)
     request = Net::HTTP::Post.new(uri.request_uri)
     # Request headers
-    request['Content-Type'] = 'application/json'
+    request['Content-Type'] = "application/#{request_type}"
     # Request headers
     request['Ocp-Apim-Subscription-Key'] = 'c48485623e4548bd958b7d526c535fb3'
     # Request body
@@ -131,7 +154,17 @@ class UserImagesController < ApplicationController
       http.request(request)
     end
 
-    response.body
+
+    body = response.body != ""? JSON.parse(response.body) : ""
+
+    puts "Code: #{response.code}"
+    #todo: worry about other errors (actually they send a code back so thats more reliable than this)
+    if response.code == "429"
+      sleep(10)
+      body = post_call_azure(end_point, request_params, request_body, request_type)
+    end
+
+    body
   end
 
   def get_call_azure(end_point, request_params={}, request_body="{}")
@@ -148,23 +181,41 @@ class UserImagesController < ApplicationController
       http.request(request)
     end
 
-    response.body
+    body = response.body != ""? JSON.parse(response.body) : ""
+    puts "Code: #{response.code}"
+    #todo: worry about other errors (actually they send a code back so thats more reliable than this)
+    if response.code == "429"
+      sleep(10)
+      body = get_call_azure(end_point, request_params, request_body)
+    end
+
+    body
   end
 
-  def detect_faces(user_image)
+  def detect_faces(binary_photo)
+    post_call_azure("detect", {
+        # Request parameters
+        'returnFaceId' => 'true',
+        'returnFaceLandmarks' => 'false',
+    }, binary_photo, "octet-stream")
+  end
+=begin
+
+  def detect_faces(url)
     JSON.parse(post_call_azure("detect", {
         # Request parameters
         'returnFaceId' => 'true',
         'returnFaceLandmarks' => 'false',
-    }, "{\"url\": \"#{user_image}\"}"))
+    }, "{\"url\": \"#{url}\"}"))
   end
+=end
 
   def train_person_group(group)
     post_call_azure("persongroups/#{group.azure_id}/train")
 
     # todo: use scheduling tasks
     loop do
-      response = JSON.parse(get_training_status(group))
+      response = get_training_status(group)
       puts response
       sleep 1
       break if response['status'] != "running"
@@ -176,8 +227,7 @@ class UserImagesController < ApplicationController
     get_call_azure("persongroups/#{group.azure_id}/training")
   end
 
-  def identify_people(group, user_image, faces)
-    url = user_image.url
+  def identify_people(group, faces)
     face_ids = faces.collect { |face| face['faceId']}
 
     identified_faces = get_identities(group, face_ids)
@@ -201,9 +251,9 @@ class UserImagesController < ApplicationController
   end
 
   def get_identities(group, face_ids)
-    response = JSON.parse(post_call_azure("identify", {},  "{
+    response = post_call_azure("identify", {},  "{
       \"personGroupId\": \"#{group.azure_id}\",
-      \"faceIds\": #{face_ids}}"))
+      \"faceIds\": #{face_ids}}")
     puts "Response from identifies: #{response}"
     response
   end
@@ -217,8 +267,8 @@ class UserImagesController < ApplicationController
     person
   end
 
-  def add_face_to_person(group, person, url, detected_face)
-    puts "Adding face: #{detected_face} to person: #{person.name} with url: #{url}"
+  def add_face_to_person(group, person, binary_photo, detected_face)
+    puts "Adding face: #{detected_face} to person: #{person.name}"
     face_rectangle = detected_face['faceRectangle']
     left = face_rectangle['left']
     top = face_rectangle['top']
@@ -227,19 +277,20 @@ class UserImagesController < ApplicationController
 
     response = post_call_azure("persongroups/#{group.azure_id}/persons/#{person.person_id}/persistedFaces",
                { 'targetFace' => "#{left},#{top},#{width},#{height}"},
-               "{\"url\": \"#{url}\"}")
+               binary_photo,
+                               "octet-stream")
     puts "Added face to person: #{response}"
     response
   end
 
   def add_azure_person(group, face_id)
-    response = JSON.parse(post_call_azure("persongroups/#{group.azure_id}/persons", {}, "{\"name\": \"#{face_id}\"}"))
+    response = post_call_azure("persongroups/#{group.azure_id}/persons", {}, "{\"name\": \"#{face_id}\"}")
     puts "Added azure person: #{response}"
     response
   end
 
   def get_azure_person(group, person_id)
-    response = JSON.parse(get_call_azure("persongroups/#{group.azure_id}/persons/#{person_id}", {}))
+    response = get_call_azure("persongroups/#{group.azure_id}/persons/#{person_id}", {})
     puts "Get azure person: #{response}"
     response
   end

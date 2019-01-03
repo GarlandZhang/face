@@ -4,7 +4,7 @@
 <h3>Images</h3>
 <%= @images.each do |image| %>
   <div>
-    <%= image_tag image.url %>
+    <%= image_tag image.image %>
     <%= link_to "See more", show_image_url(image) %>
   </div>
 <% end %>

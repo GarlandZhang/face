@@ -1,12 +1,11 @@
 require 'net/http'
-
-uri = URI('https://westcentralus.api.cognitive.microsoft.com/face/v1.0/persongroups/person_group_wogo/persons/b4656c6b-7f81-4d4e-b6f6-c176bc825d86/persistedFaces')
+uri = URI('https://westcentralus.api.cognitive.microsoft.com/face/v1.0/persongroups/person_group_garland/persons/6371a1fe-e502-49a6-adfe-b8f03461f06f/persistedFaces')
 uri.query = URI.encode_www_form({
 })
 
 request = Net::HTTP::Post.new(uri.request_uri)
 # Request headers
-request['Content-Type'] = 'application/json'
+request['Content-Type'] = 'application/octet-stream'
 # Request headers
 request['Ocp-Apim-Subscription-Key'] = 'c48485623e4548bd958b7d526c535fb3'
 # Request body
