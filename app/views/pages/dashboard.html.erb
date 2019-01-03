@@ -1,3 +1,9 @@
+<div>
+  <%= form_tag(search_path, {:method => :get}) %>
+  <p>Search <%= text_field_tag :names %></p>
+  <%= text_field_tag(:id, @user.id, {type: :hidden}) %>
+  <%= submit_tag 'Search' %>
+</div>
 <p> Hello <%= @user.username %></p>
 <%= link_to "Add image", add_image_path(@user)%>
 <h3>Images</h3>

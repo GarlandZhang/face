@@ -2,9 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e531e053-9df4-4485-8735-71da6fab670d" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/app/views/people/search.html.erb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/controllers/people_controller.rb" beforeDir="false" afterPath="$PROJECT_DIR$/app/controllers/people_controller.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/views/people/show.html.erb" beforeDir="false" afterPath="$PROJECT_DIR$/app/views/people/show.html.erb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/views/pages/dashboard.html.erb" beforeDir="false" afterPath="$PROJECT_DIR$/app/views/pages/dashboard.html.erb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/config/routes.rb" beforeDir="false" afterPath="$PROJECT_DIR$/config/routes.rb" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.bundle/" />
@@ -89,32 +90,32 @@
           <entry key="DATABASE/800a4f53-98d6-4472-85f5-4a5af009e1c4" value="1" />
           <entry key="RailsDependency/User" value="5" />
           <entry key="Rakefile" value="1" />
-          <entry key="erb" value="45" />
+          <entry key="erb" value="47" />
           <entry key="html" value="2" />
-          <entry key="rb" value="270" />
+          <entry key="rb" value="278" />
           <entry key="sql" value="2" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
           <entry key="HTML" value="2" />
-          <entry key="RHTML" value="45" />
-          <entry key="Ruby" value="271" />
+          <entry key="RHTML" value="47" />
+          <entry key="Ruby" value="279" />
           <entry key="Scratch" value="2" />
           <entry key="UML" value="6" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="erb" value="2391" />
-          <entry key="rb" value="19018" />
+          <entry key="erb" value="2898" />
+          <entry key="rb" value="19627" />
           <entry key="sql" value="29" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="RHTML" value="2391" />
-          <entry key="Ruby" value="19018" />
+          <entry key="RHTML" value="2898" />
+          <entry key="Ruby" value="19627" />
           <entry key="Scratch" value="29" />
         </counts>
       </usages-collector>
@@ -122,20 +123,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/app/views/people/show.html.erb">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="17">
-              <caret line="1" column="28" lean-forward="true" selection-start-line="1" selection-start-column="28" selection-end-line="1" selection-end-column="28" />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/controllers/people_controller.rb">
+        <entry file="file://$PROJECT_DIR$/app/views/pages/dashboard.html.erb">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="593">
-              <caret line="70" column="35" lean-forward="true" selection-start-line="70" selection-start-column="35" selection-end-line="70" selection-end-column="36" />
+            <state relative-caret-position="340">
+              <caret line="20" column="43" selection-start-line="20" selection-start-column="43" selection-end-line="20" selection-end-column="43" />
             </state>
           </provider>
         </entry>
@@ -143,8 +135,35 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/config/routes.rb">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="51">
-              <caret line="3" column="50" selection-start-line="3" selection-start-column="50" selection-end-line="3" selection-end-column="50" />
+            <state relative-caret-position="238">
+              <caret line="14" column="13" selection-start-line="14" selection-start-column="13" selection-end-line="14" selection-end-column="13" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app/controllers/people_controller.rb">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="119">
+              <caret line="7" column="12" selection-start-line="7" selection-start-column="12" selection-end-line="7" selection-end-column="12" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/views/people/search.html.erb">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="17">
+              <caret line="1" column="6" selection-start-line="1" selection-start-column="6" selection-end-line="1" selection-end-column="6" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/actionview-5.1.6.1/lib/action_view/helpers/url_helper.rb">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="223">
+              <caret line="188" column="72" selection-start-line="188" selection-start-column="72" selection-end-line="188" selection-end-column="72" />
             </state>
           </provider>
         </entry>
@@ -231,15 +250,16 @@
         <option value="$PROJECT_DIR$/db/migrate/20190101224119_add_column_to_person.rb" />
         <option value="$PROJECT_DIR$/db/migrate/20190101230750_update_column_names_person.rb" />
         <option value="$PROJECT_DIR$/app/models/relationship.rb" />
-        <option value="$PROJECT_DIR$/app/controllers/pages_controller.rb" />
         <option value="$PROJECT_DIR$/db/migrate/20190102231114_remove_foreign_key_person_group.rb" />
         <option value="$PROJECT_DIR$/app/views/people/update.html.erb.html" />
         <option value="$PROJECT_DIR$/app/views/people/update.html.erb" />
-        <option value="$PROJECT_DIR$/app/views/pages/dashboard.html.erb" />
         <option value="$PROJECT_DIR$/app/views/people/edit.html.erb" />
         <option value="$PROJECT_DIR$/app/controllers/user_images_controller.rb" />
-        <option value="$PROJECT_DIR$/config/routes.rb" />
         <option value="$PROJECT_DIR$/app/views/people/show.html.erb" />
+        <option value="$PROJECT_DIR$/app/controllers/pages_controller.rb" />
+        <option value="$PROJECT_DIR$/config/routes.rb" />
+        <option value="$PROJECT_DIR$/app/views/pages/dashboard.html.erb" />
+        <option value="$PROJECT_DIR$/app/views/people/search.html.erb" />
         <option value="$PROJECT_DIR$/app/controllers/people_controller.rb" />
       </list>
     </option>
@@ -374,7 +394,7 @@
     <property name="DefaultHtmlFileTemplate" value="HTML File" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1546476670790" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1546479277090" />
     <property name="database.console.LAST_STATE" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
@@ -508,12 +528,12 @@
       <workItem from="1546068938282" duration="10028000" />
       <workItem from="1546151789580" duration="71087000" />
       <workItem from="1546379111426" duration="14148000" />
-      <workItem from="1546413317181" duration="6725000" />
+      <workItem from="1546413317181" duration="9302000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="102094000" />
+    <option name="totallyTimeSpent" value="104671000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -537,14 +557,14 @@
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32899022" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49946696" weight="0.24647123" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.4989339" visible="true" weight="0.24647123" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.32899022" />
       <window_info anchor="bottom" id="Database Changes" order="7" weight="0.32899022" />
-      <window_info anchor="bottom" id="Terminal" order="8" visible="true" weight="0.43322477" />
-      <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.50053304" side_tool="true" weight="0.1921824" />
+      <window_info anchor="bottom" id="Terminal" order="8" sideWeight="0.49946696" weight="0.43322477" />
+      <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.5010661" side_tool="true" visible="true" weight="0.24647123" />
       <window_info anchor="bottom" id="Version Control" order="10" />
       <window_info anchor="bottom" id="Database Console" order="11" weight="0.32899022" />
       <window_info anchor="bottom" id="Messages" order="12" />
@@ -566,17 +586,6 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/config/database.yml">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Gemfile">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="374">
-          <caret line="22" column="23" selection-start-line="22" selection-start-column="23" selection-end-line="22" selection-end-column="23" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/views/users/new.html.erb.html" />
     <entry file="file://C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/actionpack-5.1.6.1/lib/action_controller/metal/instrumentation.rb">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="149">
@@ -799,13 +808,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$APPLICATION_PLUGINS_DIR$/ruby/rubystubs/rubystubs23/kernel.rb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="221">
-          <caret line="2712" column="8" selection-start-line="2712" selection-start-column="8" selection-end-line="2712" selection-end-column="8" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/db/migrate/20181231080640_add_face_id_to_people.rb">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="34">
@@ -936,24 +938,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/controllers/pages_controller.rb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="153">
-          <caret line="9" column="34" selection-start-line="9" selection-start-column="34" selection-end-line="9" selection-end-column="34" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/views/people/update.html.erb.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="68">
           <caret line="4" column="11" selection-start-line="4" selection-start-column="11" selection-end-line="4" selection-end-column="11" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/views/pages/dashboard.html.erb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret column="35" lean-forward="true" selection-start-column="35" selection-end-column="35" />
         </state>
       </provider>
     </entry>
@@ -992,24 +980,66 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/app/views/people/show.html.erb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="57" lean-forward="true" selection-start-column="57" selection-end-column="57" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_PLUGINS_DIR$/ruby/rubystubs/rubystubs23/kernel.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="272">
+          <caret line="732" column="13" selection-start-line="732" selection-start-column="13" selection-end-line="732" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/controllers/pages_controller.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="170">
+          <caret line="10" column="5" selection-start-line="10" selection-start-column="5" selection-end-line="10" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/actionview-5.1.6.1/lib/action_view/helpers/form_tag_helper.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="223">
+          <caret line="234" column="44" selection-start-line="234" selection-start-column="44" selection-end-line="234" selection-end-column="44" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/actionview-5.1.6.1/lib/action_view/helpers/url_helper.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="223">
+          <caret line="188" column="72" selection-start-line="188" selection-start-column="72" selection-end-line="188" selection-end-column="72" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/views/people/search.html.erb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="17">
+          <caret line="1" column="6" selection-start-line="1" selection-start-column="6" selection-end-line="1" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/views/pages/dashboard.html.erb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="340">
+          <caret line="20" column="43" selection-start-line="20" selection-start-column="43" selection-end-line="20" selection-end-column="43" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/config/routes.rb">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="51">
-          <caret line="3" column="50" selection-start-line="3" selection-start-column="50" selection-end-line="3" selection-end-column="50" />
+        <state relative-caret-position="238">
+          <caret line="14" column="13" selection-start-line="14" selection-start-column="13" selection-end-line="14" selection-end-column="13" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/controllers/people_controller.rb">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="593">
-          <caret line="70" column="35" lean-forward="true" selection-start-line="70" selection-start-column="35" selection-end-line="70" selection-end-column="36" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/views/people/show.html.erb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17">
-          <caret line="1" column="28" lean-forward="true" selection-start-line="1" selection-start-column="28" selection-end-line="1" selection-end-column="28" />
+        <state relative-caret-position="119">
+          <caret line="7" column="12" selection-start-line="7" selection-start-column="12" selection-end-line="7" selection-end-column="12" />
         </state>
       </provider>
     </entry>

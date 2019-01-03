@@ -1,4 +1,15 @@
 class PeopleController < ApplicationController
+  def search
+    @user = User.find(params[:id])
+    names = params[:names].split(',').map do |name| name.downcase end
+    @people_found = @user.person_group.people.select do |person|
+      puts "#{person.name}"
+      (names.select do |name|
+        person.name.include?(name)
+      end).size() > 0
+    end
+  end
+
   def show
     @person = Person.find(params[:id])
     @person_group = PersonGroup.find(@person.person_group_id)
@@ -15,6 +26,8 @@ class PeopleController < ApplicationController
 
   def update
     @person = Person.find(params[:id])
+    @person_group = PersonGroup.find(@person.person_group_id)
+    @user = User.find(@person_group.user_id)
     @person.name = person_params[:name]
     if @person.save
       redirect_to controller: 'pages', action: 'dashboard', id: @user.id
