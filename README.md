@@ -17,6 +17,10 @@ Due to using a trial for Microsoft's Face API, my subscription will most likely 
 
 
 Examples:
+
+### Homepage
 ![Image of website](app/assets/images/face-website.png)
 
+
+### Profile
 ![Image of profile](app/assets/images/brian-qian-profile.png)
