@@ -16,5 +16,9 @@ Due to using a trial for Microsoft's Face API, my subscription will most likely 
 - voila! feast your eyes on the power of ai
 
 Examples:
-![Image of profile](https://garlandzhang.github.com/app/assets/images/face-website.png)
-![Image of profile](https://garlandzhang.github.com/app/assets/images/brian-qian-profile.png)
+![Image of profile](
+        face/app/assets/images/face-website.png
+      )
+![Image of profile](
+        face/app/assets/images/brian-qian-profile.png
+      )
