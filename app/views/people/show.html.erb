@@ -5,6 +5,8 @@
 
   <h1><%= @person.name %></h1>
 </div>
+<br>
+
 <%= link_to "edit person", edit_person_path(@person) %>
 <h3>Images</h3>
 <% @images.each do |image| %>
@@ -13,24 +15,30 @@
     <%= link_to "See more", show_image_url(image) %>
   </div>
 <% end %>
+<br>
 
 <h3>Friendships</h3>
-<h4>immediate</h4>
-<% @friends.each do |friend| %>
-  <div>
-    <%= link_to friend.name, person_path(friend) %>
-    <ul>
-      <h5>mutual</h5>
-      <% @hash_mutual_friends[friend.id].each do |mutual_friend| %>
-       <p><%= link_to mutual_friend.name, person_path(mutual_friend) %></p>
-      <% end %>
-    </ul>
+<div style="display: flex">
+  <div style="padding-right: 2%">
+    <h4>immediate</h4>
+    <% @friends.each do |friend| %>
+      <div>
+        <%= link_to friend.name, person_path(friend) %>
+        <ul>
+          <h5>mutual</h5>
+          <% @hash_mutual_friends[friend.id].each do |mutual_friend| %>
+            <p><%= link_to mutual_friend.name, person_path(mutual_friend) %></p>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
   </div>
-<% end %>
-
-<h4>second</h4>
-<% @second_friends.each do |second_friend| %>
-  <p>
-    <%= link_to second_friend.name, person_path(second_friend) %>
-  </p>
-<% end %>
+  <div class="col-3">
+    <h4>second</h4>
+    <% @second_friends.each do |second_friend| %>
+      <p>
+        <%= link_to second_friend.name, person_path(second_friend) %>
+      </p>
+    <% end %>
+  </div>
+</div>
