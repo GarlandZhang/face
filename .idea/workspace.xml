@@ -113,7 +113,7 @@
         <counts>
           <entry key="Gemfile" value="32" />
           <entry key="erb" value="3558" />
-          <entry key="md" value="49" />
+          <entry key="md" value="363" />
           <entry key="rb" value="22620" />
           <entry key="sql" value="29" />
           <entry key="yml" value="3" />
@@ -121,7 +121,7 @@
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="Markdown" value="49" />
+          <entry key="Markdown" value="363" />
           <entry key="RHTML" value="3558" />
           <entry key="Ruby" value="22652" />
           <entry key="Scratch" value="29" />
@@ -176,8 +176,8 @@
         <entry file="file://$PROJECT_DIR$/README.md">
           <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
             <state split_layout="SPLIT">
-              <first_editor relative-caret-position="234">
-                <caret line="18" column="40" selection-start-line="18" selection-start-column="40" selection-end-line="18" selection-end-column="40" />
+              <first_editor relative-caret-position="200">
+                <caret line="16" lean-forward="true" selection-start-line="16" selection-end-line="20" selection-end-column="61" />
               </first_editor>
               <second_editor />
             </state>
@@ -481,7 +481,7 @@
     <property name="DefaultHtmlFileTemplate" value="HTML File" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1546555526895" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1546556330226" />
     <property name="database.console.LAST_STATE" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
@@ -619,12 +619,12 @@
       <workItem from="1546151789580" duration="71087000" />
       <workItem from="1546379111426" duration="14148000" />
       <workItem from="1546413317181" duration="24075000" />
-      <workItem from="1546505854369" duration="13689000" />
+      <workItem from="1546505854369" duration="14544000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="133133000" />
+    <option name="totallyTimeSpent" value="133988000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -639,7 +639,7 @@
     <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.25033557" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.25033557" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -654,7 +654,7 @@
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.32899022" />
       <window_info anchor="bottom" id="Database Changes" order="7" weight="0.32899022" />
-      <window_info anchor="bottom" id="Terminal" order="8" sideWeight="0.490604" visible="true" weight="0.4318182" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="8" sideWeight="0.490604" visible="true" weight="0.4318182" />
       <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.50939596" side_tool="true" visible="true" weight="0.4318182" />
       <window_info anchor="bottom" id="Version Control" order="10" />
       <window_info anchor="bottom" id="Database Console" order="11" weight="0.32899022" />
@@ -1000,8 +1000,8 @@
     <entry file="file://$PROJECT_DIR$/README.md">
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="SPLIT">
-          <first_editor relative-caret-position="234">
-            <caret line="18" column="40" selection-start-line="18" selection-start-column="40" selection-end-line="18" selection-end-column="40" />
+          <first_editor relative-caret-position="200">
+            <caret line="16" lean-forward="true" selection-start-line="16" selection-end-line="20" selection-end-column="61" />
           </first_editor>
           <second_editor />
         </state>

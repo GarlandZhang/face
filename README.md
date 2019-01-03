@@ -15,6 +15,10 @@ Due to using a trial for Microsoft's Face API, my subscription will most likely 
 - sit back and relax (it takes a while on trial mode..)
 - voila! feast your eyes on the power of ai
 
-Examples:
-![Image of profile](https://garlandzhang.github.com/app/assets/images/face-website.png)
-![Image of profile](https://garlandzhang.github.com/app/assets/images/brian-qian-profile.png)
+## Examples:
+
+### Dashboard
+![Image of website](app/assets/images/face-website.png)
+
+### Profile
+![Image of profile](app/assets/images/profile.png)
