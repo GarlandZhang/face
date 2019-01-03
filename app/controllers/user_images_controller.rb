@@ -67,11 +67,11 @@ class UserImagesController < ApplicationController
   def populate(group, user_image, faces)
     if group.people.size == 0
       puts "No people in database"
-      people = add_people(group, faces)
+      people = add_people(group, user_image, faces)
     else
       puts "At least one person in database"
       train_person_group(group)
-      people = identify_people(group, faces) # also adds person(s) if no successful candidate
+      people = identify_people(group, user_image, faces) # also adds person(s) if no successful candidate
     end
     if people != []
       add_people_to_image(people, user_image)
@@ -123,12 +123,11 @@ class UserImagesController < ApplicationController
   end
 
   # todo: extract add_face_to_person from method (modularize)
-  def add_people(group, faces)
-    face_ids = faces.collect { |face| face['faceId']}
+  def add_people(group, user_image, faces)
     people = []
     #todo: what if person appears more than once in image?
-    face_ids.each do |face_id|
-      person = add_person(group, face_id)
+    faces.each do |face|
+      person = add_person(group, user_image.image, face)
       puts "Person created: #{person.name} with personId: #{person.person_id}"
       people << person
     end
@@ -227,7 +226,7 @@ class UserImagesController < ApplicationController
     get_call_azure("persongroups/#{group.azure_id}/training")
   end
 
-  def identify_people(group, faces)
+  def identify_people(group, user_image, faces)
     face_ids = faces.collect { |face| face['faceId']}
 
     identified_faces = get_identities(group, face_ids)
@@ -236,7 +235,8 @@ class UserImagesController < ApplicationController
       puts "ID_face currently: #{id_face}"
       if id_face['candidates'].size == 0
         puts "Candidate size is 0"
-        person = add_person(group, id_face['faceId'])
+        detected_face = faces.select{ |face| face['faceId'] == id_face['faceId']}[0]
+        person = add_person(group, user_image.image, detected_face)
       else
         # TODO: use by person id not name cause name can change
         puts "Candidate size is at least 1"
@@ -258,13 +258,29 @@ class UserImagesController < ApplicationController
     response
   end
 
-  def add_person(group, face_id)
-    puts "Adding person with detected faceId: #{face_id}"
-    azure_added_person = add_azure_person(group, face_id)
+  def add_person(group, photo, face)
+    puts "Adding person with face: #{face}"
+    azure_added_person = add_azure_person(group, face['faceId'])
     azure_person = get_azure_person(group, azure_added_person['personId'])
+    puts "photo: #{photo}"
+    #crop_profile_pic(photo, face['faceRectangle'])
     person = Person.new({:name => azure_person['name'], :last_face_id => azure_person['name'], :person_id => azure_person['personId']})
+    face_rectangle = face['faceRectangle']
+    person.face_width = face_rectangle['width']
+    person.face_height = face_rectangle['height']
+    person.face_offset_x = face_rectangle['left']
+    person.face_offset_y = face_rectangle['top']
+    person.avatar.attach(photo.blob)
     group.people << person
     person
+  end
+
+  def crop_profile_pic(photo, face_rectangle)
+    puts "Face rectangle: #{face_rectangle}"
+    profile_pic = MiniMagick::Image.new(url_for(photo))
+    puts "gotten"
+    profile_pic.colorspace "Gray"
+    #profile_pic.crop "#{face_rectangle['width']}x#{face_rectangle['height']}+#{face_rectangle['left']}+#{face_rectangle['top']}"
   end
 
   def add_face_to_person(group, person, binary_photo, detected_face)

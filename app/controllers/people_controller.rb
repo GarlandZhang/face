@@ -1,3 +1,5 @@
+require 'mini_magick'
+
 class PeopleController < ApplicationController
   def search
     @user = User.find(params[:id])
@@ -15,6 +17,7 @@ class PeopleController < ApplicationController
     @person_group = PersonGroup.find(@person.person_group_id)
     @user = User.find(@person_group.user_id)
     @images = @person.user_images
+    @avatar = @person.avatar
     @friends = @person.relationships.map do |relationship| Person.find(relationship.friend_id) end
     @second_friends = get_second_friends(@person)
     @hash_mutual_friends = get_hashed_mutual_friends(@person)

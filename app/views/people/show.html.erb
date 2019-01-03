@@ -1,5 +1,9 @@
 <%= link_to "back to dashboard", dashboard_path(@user) %>
-<h1><%= @person.name %></h1>
+<div>
+  <%= image_tag @avatar.variant(crop: "#{@person.face_width}x#{@person.face_height}+#{@person.face_offset_x}+#{@person.face_offset_y}") %>
+
+  <h1><%= @person.name %></h1>
+</div>
 <%= link_to "edit person", edit_person_path(@person) %>
 <h3>Images</h3>
 <% @images.each do |image| %>
