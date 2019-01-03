@@ -17,8 +17,8 @@ Due to using a trial for Microsoft's Face API, my subscription will most likely 
 
 Examples:
 ![Image of profile](
-        face/app/assets/images/face-website.png
+        "face/app/assets/images/face-website.png"
       )
 ![Image of profile](
-        face/app/assets/images/brian-qian-profile.png
+        "face/app/assets/images/brian-qian-profile.png"
       )
