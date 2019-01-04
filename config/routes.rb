@@ -7,7 +7,7 @@ Rails.application.routes.draw do
   post '/user_images/create' => 'user_images#create'
   get '/people/:id/show' => 'people#show', as: :person
   get '/people/:id/edit' => 'people#edit', as: :edit_person
-  get '/people/search' => 'people#search', as: :search
+  get '/user_images/search' => 'user_images#search', as: :search
   patch '/people/:id/update' => 'people#update', as: :update_person
   get '/user_images/:id/show' => 'user_images#show', as: :show_image
   root 'pages#login'

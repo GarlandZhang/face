@@ -1,8 +1,22 @@
 require 'net/http'
 require 'json'
 require 'base64'
+require 'set'
 
 class UserImagesController < ApplicationController
+
+  def search
+    @user = User.find(params[:id])
+    names = params[:names].split(%r{,\s*}).map do |name| name.downcase end
+    @images_found = @user.user_images.select do |image|
+      people_names = image.people.map do |person| person.name end
+      puts "names: #{names} and people_names: #{people_names}."
+      (people_names.select do |name|
+        names.include?(name.downcase)
+      end).size >= names.size
+    end
+  end
+
   def new
     @user = User.find(params[:id])
     @user_image = UserImage.new
