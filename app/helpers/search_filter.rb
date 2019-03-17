@@ -16,6 +16,7 @@ class SearchFilter
 
   def normalize_entities(entities)
     return [] if entities.nil?
+    entities
   end
 
   def normalize_input(input)
