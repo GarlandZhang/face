@@ -54,3 +54,4 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 gem 'image_processing', '~> 1.2'
 gem 'mini_magick', '~> 4.9', '>= 4.9.2'
+gem 'pry', '~> 0.12.2'

@@ -9,7 +9,7 @@ class SearchFilter
   
   def search_entities_from_input
     return [] if entities.empty?    
-    entities.select { |entity| (input - entities.names).empty? }
+    entities.select { |entity| (input - entity.names).empty? }
   end
 
   private
