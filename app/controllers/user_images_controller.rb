@@ -6,15 +6,7 @@ require 'set'
 class UserImagesController < ApplicationController
 
   def search
-    @user = User.find(params[:id])
-    names = params[:names].split(%r{,\s*}).map do |name| name.downcase end
-    @images_found = @user.user_images.select do |image|
-      people_names = image.people.map do |person| person.name end
-      puts "names: #{names} and people_names: #{people_names}."
-      (people_names.select do |name|
-        names.include?(name.downcase)
-      end).size >= names.size
-    end
+    search_user_images(User.find(params[:id]), normalize_names(params[:name])
   end
 
   def new
@@ -47,6 +39,16 @@ class UserImagesController < ApplicationController
   end
 
   private
+
+  def normalize_names(names)
+    return [] if names.nil? || names.blank?
+    names.split(%r(,\s*)).map { |name| name.downcase }
+  end
+
+  def search_user_images(user, names)
+    user.user_images.select { |image| (names - image.names).empty? }
+  end
+
   def user_image_params
     params.require(:user_image).permit(:url, :images)
   end

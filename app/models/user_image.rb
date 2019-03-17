@@ -3,4 +3,8 @@ class UserImage < ApplicationRecord
   has_many :tags, :dependent => :destroy
   has_many :people, through: :tags
   has_one_attached :image, dependent: :destroy
+
+  def names
+    people.map { |person| person.name }
+  end
 end
