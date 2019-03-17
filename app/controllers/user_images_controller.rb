@@ -6,7 +6,8 @@ require 'set'
 class UserImagesController < ApplicationController
 
   def search
-    SearchFilter.new(User.find(params[:id]), params[:name]).search_user_images
+    @user = User.find(params[:id])
+    SearchFilter.new(entities: user.user_images, input: params[:name]).search_entities_from_input
   end
 
   def new
@@ -317,4 +318,6 @@ class UserImagesController < ApplicationController
     puts "Get azure person: #{response}"
     response
   end
+
+  def attr_reader :user
 end
