@@ -57,12 +57,12 @@ ActiveRecord::Schema.define(version: 2019_01_03_103701) do
   end
 
   create_table "relationships", force: :cascade do |t|
-    t.integer "person_id"
+    t.integer "main_id"
     t.integer "friend_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["friend_id"], name: "index_relationships_on_friend_id"
-    t.index ["person_id"], name: "index_relationships_on_person_id"
+    t.index ["main_id"], name: "index_relationships_on_main_id"
   end
 
   create_table "shared_dbs", force: :cascade do |t|
@@ -81,17 +81,9 @@ ActiveRecord::Schema.define(version: 2019_01_03_103701) do
 
   create_table "user_images", force: :cascade do |t|
     t.string "url"
+    t.integer "user_val"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "user_id"
-    t.string "pictures_file_name"
-    t.string "pictures_content_type"
-    t.integer "pictures_file_size"
-    t.datetime "pictures_updated_at"
-    t.string "image_file_name"
-    t.string "image_content_type"
-    t.integer "image_file_size"
-    t.datetime "image_updated_at"
   end
 
   create_table "users", force: :cascade do |t|
