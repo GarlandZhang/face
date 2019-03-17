@@ -9,7 +9,7 @@ class SearchFilter
   
   def search_entities_from_input
     return [] if entities.empty?    
-    entities.select { |entity| (input - entities.names).empty? } if entities[0].is_a?(:UserImage)
+    entities.select { |entity| (input - entities.names).empty? }
   end
 
   private
