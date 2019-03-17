@@ -4,7 +4,7 @@ class SearchFilter
 
   def initialize(user, names)
     @user = user
-    @names = names
+    @names = normalize_names(names)
   end
   
   def search_user_images

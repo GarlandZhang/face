@@ -6,7 +6,7 @@ require 'set'
 class UserImagesController < ApplicationController
 
   def search
-    SearchFilter.new(User.find(params[:id]), normalize_names(params[:name])
+    SearchFilter.new(User.find(params[:id]), params[:name]).search_user_images
   end
 
   def new
