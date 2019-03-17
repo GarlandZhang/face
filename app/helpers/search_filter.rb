@@ -2,22 +2,27 @@ class SearchFilter
   
   STRIP_WHITESPACE = %r(,\s*)
 
-  def initialize(user, names)
-    @user = user
-    @names = normalize_names(names)
+  def initialize(entities:, input:)
+    @entities = normalize_entities(entities)
+    @input = normalize_input(input)
   end
   
-  def search_user_images
-    user.user_images.select { |image| (names - image.names).empty? }
+  def search_entities_from_input
+    return [] if entities.empty?    
+    entities.select { |entity| (input - entities.names).empty? } if entities[0].is_a?(:UserImage)
   end
 
   private
 
-  def normalize_names(names)
-    return [] if names.nil? || names.blank?
-    names.split(STRIP_WHITESPACE).map { |name| name.downcase }
+  def normalize_entities(entities)
+    return [] if entities.nil?
   end
 
-  attr_reader :user, :names
+  def normalize_input(input)
+    return [] if input.nil? || input.blank?
+    input.split(STRIP_WHITESPACE).map { |elem| elem.try(:downcase) }
+  end
+
+  attr_reader :entities, :input
 
 end
