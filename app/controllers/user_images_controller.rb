@@ -181,7 +181,7 @@ class UserImagesController < ApplicationController
     # Request headers
     request['Content-Type'] = 'application/json'
     # Request headers
-    request['Ocp-Apim-Subscription-Key'] = 'c48485623e4548bd958b7d526c535fb3'
+    request['Ocp-Apim-Subscription-Key'] = '34b4563891a147239c593cb83f6eca63'
     # Request body
     request.body = request_body
     response = Net::HTTP.start(uri.host, uri.port, :use_ssl => uri.scheme == 'https') do |http|
