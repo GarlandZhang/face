@@ -319,5 +319,5 @@ class UserImagesController < ApplicationController
     response
   end
 
-  def attr_reader :user
+  attr_reader :user
 end
