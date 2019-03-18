@@ -5,6 +5,9 @@ class PhotoScanner
 
   RESPONSE_CODES = { 429 => :limit_reached }
 
+  REQUEST_TYPE_JSON = 'json'
+  REQUEST_TYPE_OS = 'octet-stream'
+
   def initialize(photos)
       @photos = photos
   end
@@ -13,17 +16,27 @@ class PhotoScanner
       return [] if photos.nil?
       user_images = []
       photos.each do |photo|
-          faces = detect_faces
+          faces = detect_faces(photo)
       end
   end
 
   private
 
   def detect_faces(photo)
-    post_call_azure("detect", { 'returnFaceId' => 'true', 'returnFaceLandmarks' => 'false' }, photo.read, "octet-stream")
+    response = post_call_azure(
+      endpoint_name: "detect", 
+      request_params: { 'returnFaceId' => 'true', 'returnFaceLandmarks' => 'false' }, 
+      request_body: photo.read, 
+      request_type: REQUEST_TYPE_OS)
+    if response.blank?
+      puts "No faces detected!"
+    else
+      puts "Faces detected! Response: #{response}"
+      response
+    end
   end
 
-  def post_call_azure(endpoint_name:, request_params: {}, request_body: {}, request_type: 'json')    
+  def post_call_azure(endpoint_name:, request_params: {}, request_body: {}, request_type: REQUEST_TYPE_JSON)    
     response = spam_call(
       uri: uri_setup(endpoint_name: endpoint_name, request_params: request_params), 
       request: request_setup(uri: uri, request_type: request_type, request_body: request_body), 
