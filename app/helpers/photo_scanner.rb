@@ -12,7 +12,7 @@ class PhotoScanner
       @photos = photos
   end
 
-  def add_user_images
+  def build_images_from_photos
       return [] if photos.nil?
       user_images = []
       photos.each do |photo|
@@ -30,6 +30,7 @@ class PhotoScanner
       request_type: REQUEST_TYPE_OS)
     if response.blank?
       puts "No faces detected!"
+      []
     else
       puts "Faces detected! Response: #{response}"
       response
