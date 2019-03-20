@@ -18,7 +18,7 @@ module PhotoScanner
       request_params: { 'returnFaceId' => 'true', 'returnFaceLandmarks' => 'false' }, 
       request_body: photo.read, 
       request_type: REQUEST_TYPE_OS)
-    faces.blank? [] : faces
+    faces.blank? ? [] : faces
   end
 
   private
