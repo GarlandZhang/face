@@ -1,4 +1,4 @@
-class PhotoScanner
+module PhotoScanner
 
   URL = "https://westcentralus.api.cognitive.microsoft.com/face/v1.0/"
   SUBSCRIPTION_KEY = '34b4563891a147239c593cb83f6eca63'
@@ -8,34 +8,20 @@ class PhotoScanner
   REQUEST_TYPE_JSON = 'json'
   REQUEST_TYPE_OS = 'octet-stream'
 
-  def initialize(photos)
-      @photos = photos
+  def initialize(photo)
+      @photo = photo
   end
-
-  def build_images_from_photos
-      return [] if photos.nil?
-      user_images = []
-      photos.each do |photo|
-        faces = detect_faces(photo)
-      end
-  end
-
-  private
 
   def detect_faces(photo)
-    response = post_call_azure(
+    faces = post_call_azure(
       endpoint_name: "detect", 
       request_params: { 'returnFaceId' => 'true', 'returnFaceLandmarks' => 'false' }, 
       request_body: photo.read, 
       request_type: REQUEST_TYPE_OS)
-    if response.blank?
-      puts "No faces detected!"
-      []
-    else
-      puts "Faces detected! Response: #{response}"
-      response
-    end
+    faces.blank? [] : faces
   end
+
+  private
 
   def post_call_azure(endpoint_name:, request_params: {}, request_body: {}, request_type: REQUEST_TYPE_JSON)    
     response = spam_call(
