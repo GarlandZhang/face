@@ -16,7 +16,7 @@ class PhotoScanner
       return [] if photos.nil?
       user_images = []
       photos.each do |photo|
-          faces = detect_faces(photo)
+        faces = detect_faces(photo)
       end
   end
 
