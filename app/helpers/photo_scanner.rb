@@ -1,4 +1,4 @@
-module PhotoScanner
+class PhotoScanner
 
   URL = "https://westcentralus.api.cognitive.microsoft.com/face/v1.0/"
   SUBSCRIPTION_KEY = '34b4563891a147239c593cb83f6eca63'
