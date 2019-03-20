@@ -12,7 +12,7 @@ class PhotoScanner
       @photo = photo
   end
 
-  def detect_faces(photo)
+  def self.detect_faces(photo)
     faces = post_call_azure(
       endpoint_name: "detect", 
       request_params: { 'returnFaceId' => 'true', 'returnFaceLandmarks' => 'false' }, 

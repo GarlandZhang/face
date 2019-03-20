@@ -47,7 +47,7 @@ class UserImagesController < ApplicationController
 
   def add_user_images(photos)
     photos.each do |photo|
-      faces = detect_faces(photo.read)
+      faces = PhotoScanner.detect_faces(photo)
       if faces != []
         puts "Faces detected: #{faces}"
         user_image = UserImage.new
