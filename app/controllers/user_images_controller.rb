@@ -23,13 +23,8 @@ class UserImagesController < ApplicationController
   def create
     puts "==================================="
     @user = User.find(params[:id])
-
-    #TODO: fix form input
-    #urls = user_image_params[:url].split(',')
     photos = params[:user_image][:images]
-    #photos.each do |photo| puts photo.read end
-    # add_user_images(urls)
-    @user.user_images.concat to_user_images(photos)
+    user.user_images.concat to_user_images(photos)
     if @user.save
       redirect_to controller: 'pages', action: 'dashboard', id: @user.id
     else
