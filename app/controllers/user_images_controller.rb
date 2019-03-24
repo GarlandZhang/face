@@ -47,15 +47,17 @@ class UserImagesController < ApplicationController
 
   def add_user_images(photos)
     photos.each do |photo|
-      faces = PhotoScanner.detect_faces(photo)
-      unless faces.empty?
-        user_image = UserImage.new
-        user_image.attach(photo)
-        faces.each { |face| user_image.people << id_face(face) }
-        populate(@user.person_group, user_image, faces)
-        @user.user_images << user_image
-      end
+      user_image = UserImage.new
+      user_image.attach(photo)
+      @user.user_images << normalize_user_image(user_image)
     end
+  end
+
+  def normalize_user_image(user_image)
+    faces = PhotoScanner.detect_faces(user_image.photo)
+    faces.each { |face| user_image.people << id_face(face) }
+    populate(@user.person_group, user_image, faces)
+    user_image
   end
 =begin
 
