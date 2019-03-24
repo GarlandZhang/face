@@ -29,7 +29,7 @@ class UserImagesController < ApplicationController
     photos = params[:user_image][:images]
     #photos.each do |photo| puts photo.read end
     # add_user_images(urls)
-    add_user_images(photos)
+    @user.user_images.concat to_user_images(photos)
     if @user.save
       redirect_to controller: 'pages', action: 'dashboard', id: @user.id
     else
@@ -45,11 +45,11 @@ class UserImagesController < ApplicationController
     params.require(:user_image).permit(:url, :images)
   end
 
-  def add_user_images(photos)
-    photos.each do |photo|
+  def to_user_images(photos)
+    photos.map do |photo|
       user_image = UserImage.new
       user_image.attach(photo)
-      @user.user_images << normalize_user_image(user_image)
+      normalize_user_image(user_image)
     end
   end
 
