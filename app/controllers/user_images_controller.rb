@@ -24,7 +24,7 @@ class UserImagesController < ApplicationController
     puts "==================================="
     @user = User.find(params[:id])
     photos = params[:user_image][:images]
-    user.user_images.concat to_user_images(normalize_photos(photos))
+    user.user_images.concat(to_user_images(normalize_photos(photos)))
     if @user.save
       redirect_to controller: 'pages', action: 'dashboard', id: @user.id
     else
@@ -61,7 +61,7 @@ class UserImagesController < ApplicationController
 
   def extract_people_from_photo(photo)
     people = get_people(
-      person_group: trained_person_group(@user.person_group), 
+      person_group: trained_person_group(user.person_group), 
       faces: PhotoScanner.detect_faces(photo)
     )
     people.each { |person| person.avatar.attach(photo.blob) }
