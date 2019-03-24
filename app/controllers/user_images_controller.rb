@@ -55,7 +55,7 @@ class UserImagesController < ApplicationController
 
   def normalize_user_image(user_image)
     faces = PhotoScanner.detect_faces(user_image.photo)
-    faces.each { |face| user_image.people << id_face(face) }
+    faces.each { |face| user_image.people << id_person(face) }
     populate(@user.person_group, user_image, faces)
     user_image
   end
