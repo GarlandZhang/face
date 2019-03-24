@@ -61,11 +61,25 @@ class UserImagesController < ApplicationController
 
   def extract_people_from_photo(photo)
     people = get_people(
-      person_group: trained_person_group(user.person_group), 
+      person_group: trained_person_group, 
       faces: PhotoScanner.detect_faces(photo)
     )
     people.each { |person| person.avatar.attach(photo.blob) }
     people
+  end
+
+  def trained_person_group
+    group = user.person_group
+    post_call_azure("persongroups/#{group.azure_id}/train")
+
+    # todo: use scheduling tasks
+    loop do
+      response = get_training_status(group)
+      puts response
+      sleep 1
+      break if response['status'] != "running"
+    end
+    group
   end
 
   def get_people(person_group:, faces:)
