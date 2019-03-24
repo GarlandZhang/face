@@ -49,15 +49,62 @@ class UserImagesController < ApplicationController
     photos.map do |photo|
       user_image = UserImage.new
       user_image.attach(photo)
-      normalize_user_image(user_image)
+      user_image.people = normalize_people(extract_people_from_photo(photo))
+      user_image
     end
   end
 
-  def normalize_user_image(user_image)
-    faces = PhotoScanner.detect_faces(user_image.photo)
-    faces.each { |face| user_image.people << id_person(face) }
-    populate(@user.person_group, user_image, faces)
-    user_image
+  def normalize_people(people)
+    build_relationships(people)
+    people
+  end
+
+  def extract_people_from_photo(photo)
+    people = get_people(
+      person_group: trained_person_group(@user.person_group), 
+      faces: PhotoScanner.detect_faces(photo)
+    )
+    people.each { |person| person.avatar.attach(photo.blob) }
+    people
+  end
+
+  def get_people(person_group:, faces:)
+    face_ids = faces.map { |face| face['faceId'] }
+    existing_ids = existing_identities(person_group: person_group, face_ids: face_ids)
+    existing_ids.each_with_object([]) do |existing_id, people|
+      people << get_person(existing_id) || new_person(detected_face(faces: faces, target: existing_id))
+    end
+  end
+
+  def new_person(face)
+    person = to_person_from_cloud(person_group: person_group, face_id: face['faceId'])
+    face_rectangle = face['faceRectangle']
+    person.face_width = face_rectangle['width']
+    person.face_height = face_rectangle['height']
+    person.face_offset_x = face_rectangle['left']
+    person.face_offset_y = face_rectangle['top']
+    person.last_face_id = face['faceId']
+    person
+  end
+
+  def detected_face(faces:, target:)
+    faces.select{ |face| face['faceId'] == target }[0]
+  end
+
+      if existing_id['candidates'].size == 0
+        # select image face corresponding to id'd face 
+        puts "Candidate size is 0"
+        detected_face = faces.select{ |face| face['faceId'] == id_face['faceId'] }[0]
+        person = add_person(group, user_image.image, detected_face)
+      else
+        # TODO: use by person id not name cause name can change
+        puts "Candidate size is at least 1"
+        person = Person.find_by_person_id(id_face['candidates'][0]['personId'])
+        person.last_face_id = id_face['faceId']
+      end
+      puts "person added/found: #{person.name}"
+      people << person
+      puts "people id'd and added: #{people}"
   end
 =begin
 
@@ -281,6 +328,19 @@ class UserImagesController < ApplicationController
     person.avatar.attach(photo.blob)
     group.people << person
     person
+  end
+
+  def to_person_from_cloud(person_group:, face_id:)
+    person_in_cloud = create_person_in_cloud(person_group: person_group, face_id: face_id)
+    Person.new(
+      name: person_in_cloud['name'], 
+      last_face_id: person_in_cloud['name'], 
+      person_id: person_in_cloud['personId']
+    )
+  end
+
+  def create_person_in_cloud(person_group:, face_id:)
+    get_azure_person(group, add_azure_person(group, face_id)['personId'])
   end
 
   def crop_profile_pic(photo, face_rectangle)
