@@ -24,7 +24,7 @@ class UserImagesController < ApplicationController
     puts "==================================="
     @user = User.find(params[:id])
     photos = params[:user_image][:images]
-    user.user_images.concat to_user_images(photos)
+    user.user_images.concat to_user_images(normalize_photos(photos))
     if @user.save
       redirect_to controller: 'pages', action: 'dashboard', id: @user.id
     else
@@ -35,6 +35,11 @@ class UserImagesController < ApplicationController
   end
 
   private
+
+  def normalize_photos(photos)
+    return [] if photos.nil? || photos == ""
+    photos
+  end
 
   def user_image_params
     params.require(:user_image).permit(:url, :images)
