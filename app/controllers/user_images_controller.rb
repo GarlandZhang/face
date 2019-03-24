@@ -48,14 +48,12 @@ class UserImagesController < ApplicationController
   def add_user_images(photos)
     photos.each do |photo|
       faces = PhotoScanner.detect_faces(photo)
-      if faces != []
-        puts "Faces detected: #{faces}"
+      unless faces.empty?
         user_image = UserImage.new
-        user_image.image.attach(photo)
+        user_image.attach(photo)
+        faces.each { |face| user_image.people << id_face(face) }
         populate(@user.person_group, user_image, faces)
         @user.user_images << user_image
-      else
-        puts "No faces detected!"
       end
     end
   end
