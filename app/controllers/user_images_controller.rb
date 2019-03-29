@@ -90,6 +90,10 @@ class UserImagesController < ApplicationController
     end
   end
 
+  def get_person(face_id)
+    Person.find_by_person_id(face_id)
+  end
+
   def new_person(face)
     person = to_person_from_cloud(person_group: person_group, face_id: face['faceId'])
     face_rectangle = face['faceRectangle']
@@ -105,21 +109,6 @@ class UserImagesController < ApplicationController
     faces.select{ |face| face['faceId'] == target }[0]
   end
 
-      if existing_id['candidates'].size == 0
-        # select image face corresponding to id'd face 
-        puts "Candidate size is 0"
-        detected_face = faces.select{ |face| face['faceId'] == id_face['faceId'] }[0]
-        person = add_person(group, user_image.image, detected_face)
-      else
-        # TODO: use by person id not name cause name can change
-        puts "Candidate size is at least 1"
-        person = Person.find_by_person_id(id_face['candidates'][0]['personId'])
-        person.last_face_id = id_face['faceId']
-      end
-      puts "person added/found: #{person.name}"
-      people << person
-      puts "people id'd and added: #{people}"
-  end
 =begin
 
   def add_user_images(urls)
