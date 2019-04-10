@@ -86,12 +86,8 @@ class UserImagesController < ApplicationController
     face_ids = faces.map { |face| face['faceId'] }
     existing_ids = existing_identities(person_group: person_group, face_ids: face_ids)
     existing_ids.each_with_object([]) do |existing_id, people|
-      people << get_person(existing_id) || new_person(detected_face(faces: faces, target: existing_id))
+      people << Person.find_by_person_id(existing_id) || new_person(detected_face(faces: faces, target: existing_id))
     end
-  end
-
-  def get_person(face_id)
-    Person.find_by_person_id(face_id)
   end
 
   def new_person(face)
