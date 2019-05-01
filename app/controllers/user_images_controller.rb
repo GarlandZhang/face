@@ -32,7 +32,7 @@ class UserImagesController < ApplicationController
   private
 
   def normalize_photos(photos)
-    return [] if photos.nil? || photos == ""
+    return [] if photos.nil? || photos.empty?
     photos
   end
 
@@ -50,7 +50,11 @@ class UserImagesController < ApplicationController
   end
 
   def normalize_people(people)
-    build_relationships(people)
+    for main in 0..people.size - 1
+      for friend in (main + 1)..people.size - 1
+        build_relationship(people[main], people[friend]) if main != friend
+      end
+    end
     people
   end
 
@@ -145,20 +149,6 @@ class UserImagesController < ApplicationController
     end
   end
 
-  def build_relationships(people)
-    puts "people: #{people} with size: #{people.size}"
-    people.each do |main|
-      people.each do |friend|
-        puts "main: #{main.name}(#id: #{main.id}) and friend: #{friend.name}(#id: #{friend.id})"
-        if main.id != friend.id && !in_relationship(main,friend)
-          puts "Building relatiionship between #{main.id}(#{main.name}) and #{friend.id}(#{friend.name})"
-          build_relationship(main, friend)
-        end
-      end
-    end
-    people
-  end
-
   def in_relationship(main, friend)
     (main.relationships.select do |relationship|
       puts "relationship info | person_id: #{relationship.person_id}, friend_id: #{relationship.friend_id}"
@@ -167,6 +157,7 @@ class UserImagesController < ApplicationController
   end
 
   def build_relationship(main, friend)
+    return if in_relationship(main, friend)
     main.relationships << Relationship.new(:friend_id => friend.id)
     friend.relationships << Relationship.new(:friend_id => main.id)
   end
