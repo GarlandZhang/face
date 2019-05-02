@@ -43,8 +43,8 @@ class UserImagesController < ApplicationController
   def to_user_images(photos)
     photos.map do |photo|
       user_image = UserImage.new
+      user_image.people = normalize_people(extract_people_from_photo(photo.read))
       user_image.attach(photo)
-      user_image.people = normalize_people(extract_people_from_photo(photo))
       user_image
     end
   end
@@ -60,32 +60,23 @@ class UserImagesController < ApplicationController
 
   def extract_people_from_photo(photo)
     people = get_people(
-      person_group: trained_person_group, 
-      faces: PhotoScanner.detect_faces(photo)
+      person_group: FaceApi.train_person_group(user.person_group), 
+      faces: FaceApi.detect_faces(photo),
     )
     people.each { |person| person.avatar.attach(photo.blob) }
     people
   end
 
-  def trained_person_group
-    group = user.person_group
-    post_call_azure("persongroups/#{group.azure_id}/train")
-
-    # todo: use scheduling tasks
-    loop do
-      response = get_training_status(group)
-      puts response
-      sleep 1
-      break if response['status'] != "running"
-    end
-    group
-  end
-
   def get_people(person_group:, faces:)
+    puts "faces: #{faces.is_a?(String)}"
     face_ids = faces.map { |face| face['faceId'] }
-    existing_ids = existing_identities(person_group: person_group, face_ids: face_ids)
+    existing_ids = FaceApi.person_identities(person_group: person_group, face_ids: face_ids)
+    puts "existing ids: #{existing_ids}"
     existing_ids.each_with_object([]) do |existing_id, people|
-      people << Person.find_by_person_id(existing_id) || new_person(detected_face(faces: faces, target: existing_id))
+      person = Person.find_by_person_id(existing_id)
+      new_person = new_person(detected_face(faces: faces, target: existing_id))
+      puts "person: #{person} | #{new_person}"
+      people << person
     end
   end
 
@@ -290,14 +281,6 @@ class UserImagesController < ApplicationController
     people
   end
 
-  def get_identities(group, face_ids)
-    response = post_call_azure("identify", {},  "{
-      \"personGroupId\": \"#{group.azure_id}\",
-      \"faceIds\": #{face_ids}}")
-    puts "Response from identifies: #{response}"
-    response
-  end
-
   def add_person(group, photo, face)
     puts "Adding person with face: #{face}"
     azure_added_person = add_azure_person(group, face['faceId'])
@@ -316,16 +299,12 @@ class UserImagesController < ApplicationController
   end
 
   def to_person_from_cloud(person_group:, face_id:)
-    person_in_cloud = create_person_in_cloud(person_group: person_group, face_id: face_id)
+    person_in_cloud = FaceApi.create_cloud_person(person_group: person_group, face_id: face_id)
     Person.new(
       name: person_in_cloud['name'], 
       last_face_id: person_in_cloud['name'], 
       person_id: person_in_cloud['personId']
     )
-  end
-
-  def create_person_in_cloud(person_group:, face_id:)
-    get_azure_person(group, add_azure_person(group, face_id)['personId'])
   end
 
   def crop_profile_pic(photo, face_rectangle)
@@ -349,18 +328,6 @@ class UserImagesController < ApplicationController
                binary_photo,
                                "octet-stream")
     puts "Added face to person: #{response}"
-    response
-  end
-
-  def add_azure_person(group, face_id)
-    response = post_call_azure("persongroups/#{group.azure_id}/persons", {}, "{\"name\": \"#{face_id}\"}")
-    puts "Added azure person: #{response}"
-    response
-  end
-
-  def get_azure_person(group, person_id)
-    response = get_call_azure("persongroups/#{group.azure_id}/persons/#{person_id}", {})
-    puts "Get azure person: #{response}"
     response
   end
 
