@@ -4,8 +4,10 @@ module FaceApi
 
   RESPONSE_CODES = { 
     200 => :success,
-    429 => :limit_reached,
+    202 => :success,
+    429 => :rate_limit_exceeded,
     401 => :unspecified,
+    400 => :bad_request,
   }
 
   HTTP_METHODS = {
@@ -40,11 +42,15 @@ module FaceApi
     end
 
     def create_cloud_person(person_group:, face_id:)
-      cloud_person(person_group: person_group, face_id: add_cloud_person(person_group: person_group, face_id: face_id)['personId'])
+      cloud_person(person_group: person_group, person_id: add_cloud_person(person_group: person_group, face_id: face_id)['personId'])
     end
   
-    def add_cloud_person(group, face_id)
-      response = call_azure("persongroups/#{group.azure_id}/persons", {}, "{\"name\": \"#{face_id}\"}")
+    def add_cloud_person(person_group:, face_id:)
+      response = call_azure(
+        endpoint_name: "persongroups/#{person_group.azure_id}/persons",
+        request_body: "{\"name\": \"#{face_id}\"}",
+        http_method: :post,
+      )
       puts "Added azure person: #{response}"
       response
     end
@@ -57,6 +63,7 @@ module FaceApi
 
     def detect_faces(photo)
       uri = uri_setup(endpoint_name: "detect", request_params:  { 'returnFaceId' => 'true', 'returnFaceLandmarks' => 'false' })
+      puts "detect faces"
       faces = call_azure(
         endpoint_name: "detect", 
         request_params: { 'returnFaceId' => 'true', 'returnFaceLandmarks' => 'false' }, 
@@ -64,6 +71,7 @@ module FaceApi
         request_type: REQUEST_TYPE_OS,
         http_method: :post,
       )
+      puts "detected_faces: #{faces}"
       faces.blank? ? [] : faces
     end
 
@@ -96,13 +104,21 @@ module FaceApi
       response_body.blank? ? "" : JSON.parse(response_body)
     end
 
-    def spam_call(uri:, request:, code: :limit_reached)
+    def spam_call(uri:, request:, code: :rate_limit_exceeded)
       response = get_call_response(uri: uri, request: request)  
       while RESPONSE_CODES[response.code] == code
         sleep(10)
         response = get_call_response(uri: uri, request: request)  
       end
-      response.body if response.code == RESPONSE_CODES[:success]
+      
+      if RESPONSE_CODES[response.code.to_i] == :success
+        response.body
+      else
+        puts "============================"
+        puts "Error: something went wrong. Status code: #{response.code}"
+        puts response.body
+        puts "============================"
+      end
     end
 
     def uri_setup(endpoint_name:, request_params:)

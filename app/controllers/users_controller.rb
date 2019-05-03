@@ -7,7 +7,7 @@ class UsersController < ApplicationController
 
   def create
     @user = User.new(user_params)
-    @user.person_group ||=  create_person_group
+    @user.person_group ||= create_person_group
     if @user.save
       redirect_to controller: 'pages', action: 'dashboard', id: @user.id
     end

@@ -18,12 +18,24 @@ class UserImagesController < ApplicationController
   def create
     puts "==================================="
     @user = User.find(params[:id])
-    photos = params[:user_image][:images]
-    user.user_images.concat(to_user_images(normalize_photos(photos)))
-    if @user.save
+    photos = normalize_photos(params[:user_image][:images])
+    photos.each do |photo|
+      people = normalize_people(extract_people_from_photo(photo))
+      puts "normalized_people: #{people}"
+      people_ids = user.person_group.people.map(&:person_id)
+      people.each do |new_person|
+        if people_ids.exclude? new_person.person_id
+          user.person_group.people << new_person
+        end
+        puts "new_person: #{new_person} | people_ids: #{people_ids}"
+      end
+    end
+    if user.save
+      puts "user person group people: #{user.person_group.people.size}"
+      puts "user images: #{user.user_images.size}"
       redirect_to controller: 'pages', action: 'dashboard', id: @user.id
     else
-      puts @user.errors.full_messages
+      puts user.errors.full_messages
     end
 
     puts "==================================="
@@ -40,47 +52,39 @@ class UserImagesController < ApplicationController
     params.require(:user_image).permit(:url, :images)
   end
 
-  def to_user_images(photos)
-    photos.map do |photo|
-      user_image = UserImage.new
-      user_image.people = normalize_people(extract_people_from_photo(photo.read))
-      user_image.attach(photo)
-      user_image
-    end
-  end
-
   def normalize_people(people)
     for main in 0..people.size - 1
       for friend in (main + 1)..people.size - 1
-        build_relationship(people[main], people[friend]) if main != friend
+        people[main].build_relationship(people[friend]) if main != friend
       end
     end
     people
   end
 
   def extract_people_from_photo(photo)
-    people = get_people(
+    get_people(
       person_group: FaceApi.train_person_group(user.person_group), 
-      faces: FaceApi.detect_faces(photo),
+      faces: FaceApi.detect_faces(photo.read),
+      photo: photo,
     )
-    people.each { |person| person.avatar.attach(photo.blob) }
-    people
   end
 
-  def get_people(person_group:, faces:)
-    puts "faces: #{faces.is_a?(String)}"
+  def get_people(person_group:, faces:, photo:)
     face_ids = faces.map { |face| face['faceId'] }
+    puts "face_ids: #{face_ids}"
     existing_ids = FaceApi.person_identities(person_group: person_group, face_ids: face_ids)
-    puts "existing ids: #{existing_ids}"
-    existing_ids.each_with_object([]) do |existing_id, people|
-      person = Person.find_by_person_id(existing_id)
-      new_person = new_person(detected_face(faces: faces, target: existing_id))
-      puts "person: #{person} | #{new_person}"
-      people << person
+    existing_people = existing_ids.each_with_object([]) do |existing_id, people|
+      face_ids.delete(existing_id)
+      people << Person.find_by_person_id(existing_id)
     end
+    new_people = face_ids.each_with_object([]) do |new_id, people|
+      people << new_person(person_group: person_group, face: detected_face(faces: faces, target: new_id), photo: photo)
+    end
+    puts "existing_people: #{existing_people} | #{new_people}"
+    existing_people.concat(new_people)
   end
 
-  def new_person(face)
+  def new_person(person_group:, face:, photo:)
     person = to_person_from_cloud(person_group: person_group, face_id: face['faceId'])
     face_rectangle = face['faceRectangle']
     person.face_width = face_rectangle['width']
@@ -88,10 +92,12 @@ class UserImagesController < ApplicationController
     person.face_offset_x = face_rectangle['left']
     person.face_offset_y = face_rectangle['top']
     person.last_face_id = face['faceId']
+    # person.avatar.attach(photo)
     person
   end
 
   def detected_face(faces:, target:)
+    puts "detected_face: #{faces.select{ |face| face['faceId'] == target }[0]}"
     faces.select{ |face| face['faceId'] == target }[0]
   end
 
@@ -138,19 +144,6 @@ class UserImagesController < ApplicationController
       puts "Detected face: #{detected_face}"
       add_face_to_person(group, person, user_image.image.download, detected_face)
     end
-  end
-
-  def in_relationship(main, friend)
-    (main.relationships.select do |relationship|
-      puts "relationship info | person_id: #{relationship.person_id}, friend_id: #{relationship.friend_id}"
-      relationship.friend_id == friend.id
-    end).size != 0
-  end
-
-  def build_relationship(main, friend)
-    return if in_relationship(main, friend)
-    main.relationships << Relationship.new(:friend_id => friend.id)
-    friend.relationships << Relationship.new(:friend_id => main.id)
   end
 
   # todo: extract add_face_to_person from method (modularize)
