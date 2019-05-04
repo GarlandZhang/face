@@ -28,6 +28,7 @@ class UserImagesController < ApplicationController
           user.person_group.people << new_person
         end
         puts "new_person: #{new_person} | people_ids: #{people_ids}"
+        puts "user person group: #{user.person_group}"
       end
     end
     if user.save
