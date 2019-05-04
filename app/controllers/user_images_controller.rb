@@ -22,17 +22,18 @@ class UserImagesController < ApplicationController
     photos.each do |photo|
       people = normalize_people(extract_people_from_photo(photo))
       puts "normalized_people: #{people}"
-      people_ids = user.person_group.people.map(&:person_id)
+      people_ids = user.person_group.people.each_with_object([]) { |person, ids| ids << person.person_id }
       people.each do |new_person|
         if people_ids.exclude? new_person.person_id
           user.person_group.people << new_person
+          puts "new_person: #{new_person.id} | #{new_person.save!} | #{new_person.id}"
         end
         puts "new_person: #{new_person} | people_ids: #{people_ids}"
-        puts "user person group: #{user.person_group}"
+        puts "user person group: #{user.person_group.people.to_a}"
       end
     end
     if user.save
-      puts "user person group people: #{user.person_group.people.size}"
+      puts "user person group people: #{user.person_group.people.to_a}"
       puts "user images: #{user.user_images.size}"
       redirect_to controller: 'pages', action: 'dashboard', id: @user.id
     else
@@ -56,7 +57,7 @@ class UserImagesController < ApplicationController
   def normalize_people(people)
     for main in 0..people.size - 1
       for friend in (main + 1)..people.size - 1
-        people[main].build_relationship(people[friend]) if main != friend
+        # people[main].build_relationship(people[friend]) if main != friend
       end
     end
     people
@@ -294,7 +295,7 @@ class UserImagesController < ApplicationController
 
   def to_person_from_cloud(person_group:, face_id:)
     person_in_cloud = FaceApi.create_cloud_person(person_group: person_group, face_id: face_id)
-    Person.new(
+    Person.create(
       name: person_in_cloud['name'], 
       last_face_id: person_in_cloud['name'], 
       person_id: person_in_cloud['personId']
