@@ -25,7 +25,7 @@ class UserImagesController < ApplicationController
       user.user_images << UserImage.new(people: people, image: photo)
     end
     if user.save
-      redirect_to controller: 'pages', action: 'dashboard', id: @user.id
+      redirect_to controller: 'pages', action: 'dashboard', id: user.id
     else
       puts user.errors.full_messages
     end
