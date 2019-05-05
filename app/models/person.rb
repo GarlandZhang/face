@@ -6,14 +6,14 @@ class Person < ApplicationRecord
   has_one_attached :avatar, dependent: :destroy
 
   def build_relationship(friend)
-    return if in_relationship(friend)
-    relationships << Relationship.new(:friend_id => friend.id)
-    friend.relationships << Relationship.new(:friend_id => id)
+    return if in_relationship(friend) || self == friend
+    relationships << Relationship.new(:friend => friend)
+    friend.relationships << Relationship.new(:friend => self)
   end
 
   private
 
   def in_relationship(friend)
-    relationships.map(&:friend_id).include?(friend.id)
+    relationships.any? { |relationship| relationship.friend == friend }
   end
 end
