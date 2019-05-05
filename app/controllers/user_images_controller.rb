@@ -20,7 +20,7 @@ class UserImagesController < ApplicationController
     @user = User.find(params[:id])
     photos = normalize_photos(params[:user_image][:images])
     photos.each do |photo|
-      people = normalize_people(extract_people_from_photo(photo))
+      people = extract_people_from_photo(photo)
       user.person_group.add_new_people(people)
       user.user_images << UserImage.new(people: people, image: photo)
     end
@@ -54,11 +54,11 @@ class UserImagesController < ApplicationController
   end
 
   def extract_people_from_photo(photo)
-    get_people(
+    normalize_people(get_people(
       person_group: FaceApi.train_person_group(user.person_group), 
       faces: FaceApi.detect_faces(photo.read),
       photo: photo,
-    )
+    ))
   end
 
   def get_people(person_group:, faces:, photo:)
