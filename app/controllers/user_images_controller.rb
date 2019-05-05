@@ -27,11 +27,13 @@ class UserImagesController < ApplicationController
         if people_ids.exclude? new_person.person_id
           puts "new_person: #{new_person.name} | #{new_person.person_id}"
           user.person_group.people << new_person
-          puts "new_person: #{new_person.id} | #{new_person.save!} | #{new_person.id}"
         end
         puts "new_person: #{new_person} | people_ids: #{people_ids}"
         puts "user person group: #{user.person_group.people.to_a}"
       end
+      user_image = UserImage.new(people: people)
+      user_image.attach(photo)
+      user.user_images << user_image
     end
     if user.save
       puts "user person group people: #{user.person_group.people.to_a}"
