@@ -8,8 +8,6 @@ class PersonGroup < ApplicationRecord
       if people_ids.exclude? new_person.person_id
         people << new_person
       end
-      puts "new_person: #{new_person} | people_ids: #{people_ids}"
     end
-    puts "people_ids: #{people_ids} | new_people: #{new_people}"
   end
 end

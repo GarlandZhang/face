@@ -21,23 +21,10 @@ class UserImagesController < ApplicationController
     photos = normalize_photos(params[:user_image][:images])
     photos.each do |photo|
       people = normalize_people(extract_people_from_photo(photo))
-      puts "normalized_people: #{people}"
-      people_ids = user.person_group.people.each_with_object([]) { |person, ids| ids << person.person_id }
-      people.each do |new_person|
-        if people_ids.exclude? new_person.person_id
-          puts "new_person: #{new_person.name} | #{new_person.person_id}"
-          user.person_group.people << new_person
-        end
-        puts "new_person: #{new_person} | people_ids: #{people_ids}"
-        puts "user person group: #{user.person_group.people.to_a}"
-      end
-      user_image = UserImage.new(people: people)
-      user_image.attach(photo)
-      user.user_images << user_image
+      user.person_group.add_new_people(people)
+      user.user_images << UserImage.new(people: people, image: photo)
     end
     if user.save
-      puts "user person group people: #{user.person_group.people.to_a}"
-      puts "user images: #{user.user_images.size}"
       redirect_to controller: 'pages', action: 'dashboard', id: @user.id
     else
       puts user.errors.full_messages
