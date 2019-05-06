@@ -18,9 +18,9 @@ class PeopleController < ApplicationController
     @user = User.find(@person_group.user_id)
     @images = @person.user_images
     @avatar = @person.avatar
-    @friends = @person.relationships.map do |relationship| Person.find(relationship.friend_id) end
-    @second_friends = get_second_friends(@person)
-    @hash_mutual_friends = get_hashed_mutual_friends(@person)
+    # @friends = @person.relationships.map do |relationship| Person.find(relationship.friend_id) end
+    # @second_friends = get_second_friends(@person)
+    # @hash_mutual_friends = get_hashed_mutual_friends(@person)
   end
 
   def edit
