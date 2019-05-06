@@ -67,7 +67,9 @@ class UserImagesController < ApplicationController
     face_ids = faces.map { |face| face['faceId'] }
     existing_ids = FaceApi.person_identities(person_group: person_group, face_ids: face_ids)
     existing_people = existing_ids.each_with_object([]) do |existing_id, people|
-      candidate = existing_id['candidates'][0]['personId']
+      candidates = existing_id['candidates']
+      continue if candidates.empty?
+      candidate = candidates.first['personId']
       person = Person.find_by_person_id(candidate)
       current_face_id = existing_id['faceId']
       person.last_face_id = current_face_id
