@@ -2,7 +2,7 @@ class PersonGroup < ApplicationRecord
   belongs_to :user
   has_many :people, :dependent => :destroy
 
-  def existing_people(face_ids:, existing_ids:)
+  def existing_people(existing_ids)
     existing_ids.each_with_object([]) do |existing_id, existing_people|
       candidates = existing_id['candidates']
       next if candidates.empty?
