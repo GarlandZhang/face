@@ -88,7 +88,7 @@ class UserImagesController < ApplicationController
     person.face_offset_x = face_rectangle['left']
     person.face_offset_y = face_rectangle['top']
     person.last_face_id = face['faceId']
-    # person.avatar.attach(photo)
+    person.avatar.attach(photo)
     person
   end
 
