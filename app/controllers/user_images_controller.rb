@@ -289,12 +289,17 @@ class UserImagesController < ApplicationController
 
   def to_person_from_cloud(person_group:, face:, image_data:)
     person_in_cloud = FaceApi.create_cloud_person(person_group: person_group, face_id: face['faceId'])
+    face_rectangle = face['faceRectangle']
     person = Person.new(
       name: person_in_cloud['name'], 
       last_face_id: person_in_cloud['name'], 
-      person_id: person_in_cloud['personId']
+      person_id: person_in_cloud['personId'],
+      face_width: face_rectangle['width'],
+      face_height: face_rectangle['height'],
+      face_offset_x: face_rectangle['left'],
+      face_offset_y: face_rectangle['top'],
     )
-    FaceApi.add_face_to_person(person_group: person_group, person: person, image_data: image_data, face: face)
+    FaceApi.add_face_to_person(person_group: person_group,  person: person, image_data: image_data)
     person
   end
 
