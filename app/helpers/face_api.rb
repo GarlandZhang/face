@@ -63,7 +63,7 @@ module FaceApi
 
     def detect_faces(photo)
       uri = uri_setup(endpoint_name: "detect", request_params:  { 'returnFaceId' => 'true', 'returnFaceLandmarks' => 'false' })
-      puts "detect faces"
+      puts "detect faces | photo: #{photo}"
       faces = call_azure(
         endpoint_name: "detect", 
         request_params: { 'returnFaceId' => 'true', 'returnFaceLandmarks' => 'false' }, 
@@ -86,6 +86,25 @@ module FaceApi
         http_method: :post,
       )
       response.blank? ? [] : response
+    end
+
+    def add_face_to_person(person_group:, person:, image_data:, face:)
+      puts "Adding face: #{face} to person: #{person.name}"
+      face_rectangle = face['faceRectangle']
+      left = face_rectangle['left']
+      top = face_rectangle['top']
+      width = face_rectangle['width']
+      height = face_rectangle['height']
+  
+      response = call_azure(
+        endpoint_name: "persongroups/#{person_group.azure_id}/persons/#{person.person_id}/persistedFaces",
+        request_params: { 'targetFace' => "#{left},#{top},#{width},#{height}"},
+        request_body: image_data,
+        request_type: REQUEST_TYPE_OS,
+        http_method: :post,
+      )
+      puts "Added face to person: #{response}"
+      response
     end
 
     private

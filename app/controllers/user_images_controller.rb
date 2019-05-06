@@ -21,6 +21,8 @@ class UserImagesController < ApplicationController
     photos = normalize_photos(params[:user_image][:images])
     photos.each do |photo|
       people = extract_people_from_photo(photo)
+      puts "people: #{people}"
+      puts "people in person_group: #{user.person_group.people.to_a}"
       user.person_group.add_new_people(people)
       user.user_images << UserImage.new(people: people, image: photo)
     end
@@ -54,30 +56,32 @@ class UserImagesController < ApplicationController
   end
 
   def extract_people_from_photo(photo)
+    image_data = photo.read
     normalize_people(get_people(
       person_group: FaceApi.train_person_group(user.person_group), 
-      faces: FaceApi.detect_faces(photo.read),
+      faces: FaceApi.detect_faces(image_data),
       photo: photo,
+      image_data: image_data,
     ))
   end
 
-  def get_people(person_group:, faces:, photo:)
+  def get_people(person_group:, faces:, photo:, image_data:)
     face_ids = faces.map { |face| face['faceId'] }
-    puts "face_ids: #{face_ids}"
     existing_ids = FaceApi.person_identities(person_group: person_group, face_ids: face_ids)
+    puts "existing_ids: #{existing_ids} | person.all #{Person.all.to_a}"
     existing_people = existing_ids.each_with_object([]) do |existing_id, people|
       face_ids.delete(existing_id)
       people << Person.find_by_person_id(existing_id)
     end
     new_people = face_ids.each_with_object([]) do |new_id, people|
-      people << new_person(person_group: person_group, face: detected_face(faces: faces, target: new_id), photo: photo)
+      people << new_person(person_group: person_group, face: detected_face(faces: faces, target: new_id), photo: photo, image_data: image_data)
     end
     puts "existing_people: #{existing_people} | #{new_people}"
     existing_people.concat(new_people)
   end
 
-  def new_person(person_group:, face:, photo:)
-    person = to_person_from_cloud(person_group: person_group, face_id: face['faceId'])
+  def new_person(person_group:, face:, photo:, image_data:)
+    person = to_person_from_cloud(person_group: person_group, face: face, image_data: image_data)
     face_rectangle = face['faceRectangle']
     person.face_width = face_rectangle['width']
     person.face_height = face_rectangle['height']
@@ -283,13 +287,15 @@ class UserImagesController < ApplicationController
     person
   end
 
-  def to_person_from_cloud(person_group:, face_id:)
-    person_in_cloud = FaceApi.create_cloud_person(person_group: person_group, face_id: face_id)
-    Person.new(
+  def to_person_from_cloud(person_group:, face:, image_data:)
+    person_in_cloud = FaceApi.create_cloud_person(person_group: person_group, face_id: face['faceId'])
+    person = Person.new(
       name: person_in_cloud['name'], 
       last_face_id: person_in_cloud['name'], 
       person_id: person_in_cloud['personId']
     )
+    FaceApi.add_face_to_person(person_group: person_group, person: person, image_data: image_data, face: face)
+    person
   end
 
   def crop_profile_pic(photo, face_rectangle)
