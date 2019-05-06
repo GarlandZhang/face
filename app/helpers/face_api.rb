@@ -63,7 +63,6 @@ module FaceApi
 
     def detect_faces(photo)
       uri = uri_setup(endpoint_name: "detect", request_params:  { 'returnFaceId' => 'true', 'returnFaceLandmarks' => 'false' })
-      puts "detect faces | photo: #{photo}"
       faces = call_azure(
         endpoint_name: "detect", 
         request_params: { 'returnFaceId' => 'true', 'returnFaceLandmarks' => 'false' }, 
@@ -71,12 +70,11 @@ module FaceApi
         request_type: REQUEST_TYPE_OS,
         http_method: :post,
       )
-      puts "detected_faces: #{faces}"
+      puts "Detected_faces: #{faces}"
       faces.blank? ? [] : faces
     end
 
     def person_identities(person_group:, face_ids:)
-      puts "person_group: #{person_group.azure_id}"
       response = call_azure(
         endpoint_name: "identify",
         request_body: "{
@@ -85,6 +83,7 @@ module FaceApi
         }",
         http_method: :post,
       )
+      puts "Id'd people: #{response}"
       response.blank? ? [] : response
     end
 
