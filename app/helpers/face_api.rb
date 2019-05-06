@@ -118,9 +118,10 @@ module FaceApi
 
     def spam_call(uri:, request:, code: :rate_limit_exceeded)
       response = get_call_response(uri: uri, request: request)  
-      while RESPONSE_CODES[response.code] == code
+      while RESPONSE_CODES[response.code.to_i] == code
         sleep(10)
         response = get_call_response(uri: uri, request: request)  
+        puts "Retrying..."
       end
       
       if RESPONSE_CODES[response.code.to_i] == :success
