@@ -88,9 +88,9 @@ module FaceApi
       response.blank? ? [] : response
     end
 
-    def add_face_to_person(person_group:, person:, face_rectangle:, image_data:)
+    def add_face_to_person(person_group:, person_id:, face_rectangle:, image_data:)
       response = call_azure(
-        endpoint_name: "persongroups/#{person_group.azure_id}/persons/#{person.person_id}/persistedFaces",
+        endpoint_name: "persongroups/#{person_group.azure_id}/persons/#{person_id}/persistedFaces",
         request_params: { 'targetFace' => "#{face_rectangle['left']},#{face_rectangle['top']},#{face_rectangle['width']},#{face_rectangle['height']}"},
         request_body: image_data,
         request_type: REQUEST_TYPE_OS,
