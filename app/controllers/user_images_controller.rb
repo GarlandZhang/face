@@ -18,8 +18,7 @@ class UserImagesController < ApplicationController
   def create
     puts "==================================="
     @user = User.find(params[:id])
-    photos = normalize_photos(params[:user_image][:images])
-    photos.each do |photo|
+    normalize_photos.each do |photo|
       people = extract_people_from_photo(photo)
       user.person_group.add_new_people(people)
       user.user_images << UserImage.new(people: people, image: photo)
@@ -35,9 +34,8 @@ class UserImagesController < ApplicationController
 
   private
 
-  def normalize_photos(photos)
-    return [] if photos.nil? || photos.empty?
-    photos
+  def normalize_photos
+    params[:user_image].try([:images]) || []
   end
 
   def user_image_params
