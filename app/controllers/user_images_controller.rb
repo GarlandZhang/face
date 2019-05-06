@@ -35,7 +35,7 @@ class UserImagesController < ApplicationController
   private
 
   def normalize_photos
-    params[:user_image].try([:images]) || []
+    params[:user_image].try(:[], :images) || []
   end
 
   def user_image_params
@@ -65,6 +65,7 @@ class UserImagesController < ApplicationController
     face_ids = faces.map { |face| face['faceId'] }
     existing_ids = FaceApi.person_identities(person_group: person_group, face_ids: face_ids)
     existing_people = person_group.existing_people(face_ids: face_ids, existing_ids: existing_ids)
+    face_ids = face_ids - existing_people.map(&:last_face_id)
     new_people = face_ids.each_with_object([]) do |new_id, people|
       people << new_person(person_group: person_group, face: detected_face(faces: faces, target: new_id), photo: photo, image_data: image_data)
     end

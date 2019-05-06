@@ -10,7 +10,6 @@ class PersonGroup < ApplicationRecord
       person = Person.find_by_person_id(candidate)
       current_face_id = existing_id['faceId']
       person.last_face_id = current_face_id
-      face_ids.delete(current_face_id)
       existing_people << person
     end
   end
