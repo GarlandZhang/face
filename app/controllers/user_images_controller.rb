@@ -62,23 +62,28 @@ class UserImagesController < ApplicationController
   end
 
   def get_people(person_group:, faces:, photo:, image_data:)
-    face_ids = faces.map { |face| face['faceId'] }
-    existing_ids = FaceApi.person_identities(person_group: person_group, face_ids: face_ids)
-    existing_people = existing_ids.each_with_object([]) do |existing_id, people|
-      candidates = existing_id['candidates']
-      next if candidates.empty?
-      candidate = candidates.first['personId']
-      person = Person.find_by_person_id(candidate)
-      current_face_id = existing_id['faceId']
-      person.last_face_id = current_face_id
-      face_ids.delete(current_face_id)
-      people << person
+    new_ids = faces.map { |face| face['faceId'] }
+    existing_ids = FaceApi.person_identities(person_group: person_group, face_ids: new_ids)
+    people = []
+    existing_ids.each do |existing_id|
+      if (person = existing_person(existing_id))
+        people << person
+        new_ids.delete(existing_id['faceId'])
+      end
     end
-    puts "face_ids: #{face_ids} | existing_people: #{existing_people} | existing_ids: #{existing_ids}"
-    new_people = face_ids.each_with_object([]) do |new_id, people|
+    new_ids.each do |new_id|
       people << new_person(person_group: person_group, face: detected_face(faces: faces, target: new_id), photo: photo, image_data: image_data)
     end
-    existing_people.concat(new_people)
+    people
+  end
+
+  def existing_person(id)
+    candidates = id['candidates']
+    return if candidates.empty?
+    candidate = candidates.first['personId']
+    person = Person.find_by_person_id(candidate)
+    person.last_face_id = id['faceId']
+    person
   end
 
   def new_person(person_group:, face:, photo:, image_data:)
