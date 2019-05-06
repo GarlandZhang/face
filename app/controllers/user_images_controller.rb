@@ -110,7 +110,7 @@ class UserImagesController < ApplicationController
       face_offset_x: face_rectangle['left'],
       face_offset_y: face_rectangle['top'],
     )
-    FaceApi.add_face_to_person(person_group: person_group,  person: person, image_data: image_data)
+    FaceApi.add_face_to_person(person_group: person_group,  person: person.id, face_rectangle: face_rectangle, image_data: image_data)
     person
   end
 
