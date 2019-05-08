@@ -42,23 +42,14 @@ class UserImagesController < ApplicationController
     params.require(:user_image).permit(:url, :images)
   end
 
-  def normalize_people(people)
-    for main in 0..people.size - 1
-      for friend in (main + 1)..people.size - 1
-        people[main].build_relationship(people[friend]) if main != friend
-      end
-    end
-    people
-  end
-
   def extract_people_from_photo(photo)
     image_data = photo.read
-    normalize_people(get_people(
+    get_people(
       person_group: FaceApi.train_person_group(user.person_group), 
       faces: FaceApi.detect_faces(image_data),
       photo: photo,
       image_data: image_data,
-    ))
+    )
   end
 
   def get_people(person_group:, faces:, photo:, image_data:)

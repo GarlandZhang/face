@@ -9,5 +9,17 @@ class PersonGroup < ApplicationRecord
         people << new_person
       end
     end
+    normalize_people(new_people) # mutation
+  end
+
+  private
+
+  def normalize_people(people)
+    for main in 0..people.size - 1
+      for friend in (main + 1)..people.size - 1
+        people[main].build_relationship(people[friend]) if main != friend
+      end
+    end
+    people
   end
 end
