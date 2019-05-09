@@ -21,24 +21,11 @@
 <div style="display: flex">
   <div style="padding-right: 2%">
     <h4>immediate</h4>
-    <% @friends.each do |friend| %>
+    <% @friends_and_degrees.each do |friend, degree| %>
       <div>
         <%= link_to friend.name, person_path(friend) %>
-        <ul>
-          <h5>mutual</h5>
-          <% @hash_mutual_friends[friend.id].each do |mutual_friend| %>
-            <p><%= link_to mutual_friend.name, person_path(mutual_friend) %></p>
-          <% end %>
-        </ul>
+        <p>degree: <%= degree %></p>
       </div>
-    <% end %>
-  </div>
-  <div class="col-3">
-    <h4>second</h4>
-    <% @second_friends.each do |second_friend| %>
-      <p>
-        <%= link_to second_friend.name, person_path(second_friend) %>
-      </p>
     <% end %>
   </div>
 </div>

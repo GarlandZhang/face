@@ -1,6 +1,9 @@
 require 'mini_magick'
 
 class PeopleController < ApplicationController
+
+  MAX_DEGREE = 3
+
   def search
     @user = User.find(params[:id])
     names = params[:names].split(',').map do |name| name.downcase end
@@ -19,9 +22,7 @@ class PeopleController < ApplicationController
     @images = @person.user_images
     @avatar = @person.avatar
     puts "relationships: #{@person.relationships.to_a}"
-    @friends = @person.relationships.map do |relationship| Person.find(relationship.friend_id) end
-    @second_friends = get_second_friends(@person)
-    @hash_mutual_friends = get_hashed_mutual_friends(@person)
+    @friends_and_degrees = get_friends_upto(person: @person)
   end
 
   def edit
@@ -44,6 +45,28 @@ class PeopleController < ApplicationController
 
   def person_params
     params.require(:person).permit(:name)
+  end
+
+  def get_friends_upto(person:, degree: MAX_DEGREE)
+    degree_of_friends = {}
+    cur_friends = [person]
+    for cur_degree in 1..degree
+      nth_degree_friends = (cur_friends.each_with_object([]) { |friend, nth_degree_friends| nth_degree_friends.concat mutual_friends(friend) }).uniq
+      cur_friends = []
+      nth_degree_friends.each do |friend|
+        if degree_of_friends[friend].nil? && friend != person
+          degree_of_friends[friend] = cur_degree
+          cur_friends << friend
+        end
+      end
+    end
+    degree_of_friends
+  end
+
+  def mutual_friends(person)
+    person.relationships.each_with_object([]) do |relationship, friends|
+      friends << relationship.friend
+    end
   end
 
   def get_second_friends(person)
