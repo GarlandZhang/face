@@ -5,4 +5,8 @@ class UserImage < ApplicationRecord
   has_one_attached :image, dependent: :destroy
 
   delegate :attach, to: :image
+
+  def names
+    people.map(&:name)
+  end
 end

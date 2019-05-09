@@ -2,7 +2,7 @@ class UserImagesController < ApplicationController
 
   def search
     @user = User.find(params[:id])
-    @images_found = SearchFilter.new(entities: user.user_images, input: params[:name]).search_entities_from_input
+    @images_found = SearchFilter.new(entities: user.user_images, input: params[:names]).search_entities_from_input
   end
 
   def new

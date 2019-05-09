@@ -8,7 +8,7 @@ class SearchFilter
   end
   
   def search_entities_from_input
-    return [] if entities.empty?    
+    return [] if entities.empty?
     entities.select { |entity| (input - entity.names).empty? }
   end
 
