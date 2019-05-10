@@ -8,6 +8,9 @@ class UserImage < ApplicationRecord
   delegate :attach, to: :image
 
   def names
-    people.map(&:name)
+    names = []
+    people.each { |person| names << person.name }
+    object_tags.each { |tag| names << tag.name }
+    names
   end
 end
