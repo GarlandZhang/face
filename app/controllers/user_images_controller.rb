@@ -52,7 +52,7 @@ class UserImagesController < ApplicationController
   end
 
   def extract_tags_from_photo(image_data)
-    tags = ObjectDetectApi.image_tags(image_data)
+    tags = ObjectDetectApi.object_tags(image_data)
     if tags.is_a?(Hash)
       tags['description']['tags']
     end

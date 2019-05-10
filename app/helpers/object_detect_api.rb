@@ -3,7 +3,7 @@ module ObjectDetectApi
   SUBSCRIPTION_KEY = '0f0c7750313442659facc6bbd506ab08'
 
   class << self
-    def image_tags(image)
+    def object_tags(image)
       ApiSetup.post_call_azure(
         endpoint_name: URL,
         request_params: { 'visualFeatures' => 'Description,Tags' },
