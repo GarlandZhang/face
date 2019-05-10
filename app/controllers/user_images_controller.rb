@@ -19,7 +19,8 @@ class UserImagesController < ApplicationController
     puts "==================================="
     @user = User.find(params[:id])
     normalize_photos.each do |photo|
-      people = extract_people_from_photo(photo)
+      data = extract_data_from_photo(photo)
+      people = data['people']
       user.person_group.add_new_people(people)
       user.user_images << UserImage.new(people: people, image: photo)
     end
@@ -42,7 +43,22 @@ class UserImagesController < ApplicationController
     params.require(:user_image).permit(:url, :images)
   end
 
-  def extract_people_from_photo(photo)
+  def extract_data_from_photo(photo)
+    image_data = photo.read
+    {
+      "tags" => extract_tags_from_photo(image_data),
+      "people" => extract_people_from_photo(photo: photo, image_data: image_data)
+    }
+  end
+
+  def extract_tags_from_photo(image_data)
+    tags = ObjectDetectApi.image_tags(image_data)
+    if tags.is_a?(Hash)
+      tags['description']['tags']
+    end
+  end
+
+  def extract_people_from_photo(photo:, image_data:)
     image_data = photo.read
     get_people(
       person_group: FaceApi.train_person_group(user.person_group), 
