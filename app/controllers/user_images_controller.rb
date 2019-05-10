@@ -12,6 +12,7 @@ class UserImagesController < ApplicationController
 
   def show
     @user_image = UserImage.find(params[:id])
+    @user = @user_image.user
     @people = @user_image.people
     @object_tags = @user_image.object_tags
   end
