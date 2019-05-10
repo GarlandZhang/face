@@ -8,7 +8,7 @@ module ObjectDetectApi
         endpoint_name: URL,
         request_params: { 'visualFeatures' => 'Description,Tags' },
         request_body: image,
-        request_type: ApiSetup.REQUEST_TYPE_OS, 
+        request_type: ApiSetup::REQUEST_TYPE_OS, 
         subscription_key: SUBSCRIPTION_KEY,
       )
     end
