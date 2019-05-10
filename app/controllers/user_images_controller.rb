@@ -22,7 +22,7 @@ class UserImagesController < ApplicationController
       data = extract_data_from_photo(photo)
       people = data['people']
       user.person_group.add_new_people(people)
-      user.user_images << UserImage.new(people: people, image: photo)
+      user.user_images << UserImage.new(people: people, image: photo, object_tags: data['tags'])
     end
     if user.save
       redirect_to controller: 'pages', action: 'dashboard', id: user.id
@@ -53,9 +53,8 @@ class UserImagesController < ApplicationController
 
   def extract_tags_from_photo(image_data)
     tags = ObjectDetectApi.object_tags(image_data)
-    if tags.is_a?(Hash)
-      tags['description']['tags']
-    end
+    return [] unless tags.is_a?(Hash)
+    tags['description']['tags'].map { |tag| ObjectTag.new(name: tag) }
   end
 
   def extract_people_from_photo(photo:, image_data:)
