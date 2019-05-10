@@ -13,6 +13,7 @@ class UserImagesController < ApplicationController
   def show
     @user_image = UserImage.find(params[:id])
     @people = @user_image.people
+    @object_tags = @user_image.object_tags
   end
 
   def create
@@ -58,7 +59,6 @@ class UserImagesController < ApplicationController
   end
 
   def extract_people_from_photo(photo:, image_data:)
-    image_data = photo.read
     get_people(
       person_group: FaceApi.train_person_group(user.person_group), 
       faces: FaceApi.detect_faces(image_data),
