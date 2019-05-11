@@ -287,7 +287,7 @@
         <option value="$PROJECT_DIR$/app/models/tag.rb" />
         <option value="$PROJECT_DIR$/db/migrate/20181229073637_create_users.rb" />
         <option value="$PROJECT_DIR$/db/migrate/20181230215923_create_tags.rb" />
-        <option value="$PROJECT_DIR$/db/migrate/20181230173506_create_people.rb" />
+        <option value="$PROJECT_DIR$/db/migrate/20181230211506_create_people.rb" />
         <option value="$PROJECT_DIR$/db/migrate/20181230210734_create_person_groups.rb" />
         <option value="$PROJECT_DIR$/app/controllers/users_controller.rb" />
         <option value="$PROJECT_DIR$/db/migrate/20181231080640_add_face_id_to_people.rb" />
@@ -719,7 +719,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/db/migrate/20181230173506_create_people.rb">
+    <entry file="file://$PROJECT_DIR$/db/migrate/20181230211506_create_people.rb">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="51">
           <caret line="3" column="20" lean-forward="true" selection-start-line="3" selection-start-column="20" selection-end-line="3" selection-end-column="20" />
