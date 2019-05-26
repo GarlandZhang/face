@@ -6,19 +6,21 @@ module ImageStore
   class << self
     def upload_image(image)
       uri = uri_setup(endpoint_name: 'upload')
-      request_body = { "image" => image }
-      request = request_setup(request_uri: uri.request_uri, request_type: 'multipart/form-data', request_body: request_body, http_method: Net::HTTP::Post)
-      get_response(uri: uri, request: request)
+      request_body = image
+      request = request_setup(request_uri: uri.request_uri, request_type: 'application/octet-stream', request_body: request_body, http_method: Net::HTTP::Post)
+      get_response(uri: uri, request: request)['data']['link']
     end
+    alias_method :image_url, :upload_image
 
     private
 
     def get_response(uri:, request:)
-      response_body = Net::HTTP.start(
+      response = Net::HTTP.start(
         uri.host, 
         uri.port, 
         :use_ssl => uri.scheme == 'https',
       ) { |http| http.request(request) }
+      response_body = response.body
       response_body.blank? ? "" : JSON.parse(response_body)
     end
 
@@ -31,7 +33,7 @@ module ImageStore
     def request_setup(request_uri:, request_type:, request_body:, http_method:)
       request = http_method.new(request_uri)
       request['Authorization'] = "Client-ID #{CLIENT_ID}"
-      request['Content-Type'] = "application/#{request_type}"
+      request['Content-Type'] = "#{request_type}"
       request.body = request_body.to_s
       request
     end

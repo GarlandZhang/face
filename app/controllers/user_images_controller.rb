@@ -24,7 +24,7 @@ class UserImagesController < ApplicationController
       data = extract_data_from_photo(photo)
       people = data['people']
       user.person_group.add_new_people(people)
-      user.user_images << UserImage.new(people: people, image: photo, object_tags: data['tags'])
+      user.user_images << UserImage.new(people: people, url: get_image_url(photo), object_tags: data['tags'])
     end
     if user.save
       redirect_to controller: 'pages', action: 'dashboard', id: user.id
@@ -37,8 +37,12 @@ class UserImagesController < ApplicationController
 
   private
 
+  def get_image_url(photo)
+    return ImageStore.image_url(photo.image_data)
+  end
+
   def normalize_photos
-    params[:user_image].try(:[], :images) || []
+    params[:user_image].try(:[], :images).map { |photo| WrapperPhoto.new(photo) } || []
   end
 
   def user_image_params
@@ -46,10 +50,9 @@ class UserImagesController < ApplicationController
   end
 
   def extract_data_from_photo(photo)
-    image_data = photo.read
     {
-      "tags" => extract_tags_from_photo(image_data),
-      "people" => extract_people_from_photo(photo: photo, image_data: image_data)
+      "tags" => extract_tags_from_photo(photo.image_data),
+      "people" => extract_people_from_photo(photo.image_data)
     }
   end
 
@@ -59,16 +62,15 @@ class UserImagesController < ApplicationController
     tags['description']['tags'].map { |tag| ObjectTag.new(name: tag) }
   end
 
-  def extract_people_from_photo(photo:, image_data:)
+  def extract_people_from_photo(image_data)
     get_people(
       person_group: FaceApi.train_person_group(user.person_group), 
       faces: FaceApi.detect_faces(image_data),
-      photo: photo,
       image_data: image_data,
     )
   end
 
-  def get_people(person_group:, faces:, photo:, image_data:)
+  def get_people(person_group:, faces:, image_data:)
     new_ids = faces.map { |face| face['faceId'] }
     existing_ids = FaceApi.person_identities(person_group: person_group, face_ids: new_ids)
     people = []
@@ -79,7 +81,7 @@ class UserImagesController < ApplicationController
       end
     end
     new_ids.each do |new_id|
-      people << new_person(person_group: person_group, face: detected_face(faces: faces, target: new_id), photo: photo, image_data: image_data)
+      people << new_person(person_group: person_group, face: detected_face(faces: faces, target: new_id), image_data: image_data)
     end
     people
   end
@@ -93,7 +95,7 @@ class UserImagesController < ApplicationController
     person
   end
 
-  def new_person(person_group:, face:, photo:, image_data:)
+  def new_person(person_group:, face:, image_data:)
     person = to_person_from_cloud(person_group: person_group, face: face, image_data: image_data)
     face_rectangle = face['faceRectangle']
     person.face_width = face_rectangle['width']
@@ -101,7 +103,6 @@ class UserImagesController < ApplicationController
     person.face_offset_x = face_rectangle['left']
     person.face_offset_y = face_rectangle['top']
     person.last_face_id = face['faceId']
-    # person.avatar.attach(photo)
     person
   end
 
