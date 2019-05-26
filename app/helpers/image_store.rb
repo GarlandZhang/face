@@ -8,7 +8,8 @@ module ImageStore
   self << class
     def upload_image(image)
       uri = uri_setup(endpoint_name: 'upload', request_params: { 'Authorization' => ('Client-ID ' + client_id) })
-      request = request_setup(request_uri: uri.request_uri, request_type: 'multipart/form-data', request_body: image, http_method: Net::HTTP::Post)
+      request_body = { "image" => image }
+      request = request_setup(request_uri: uri.request_uri, request_type: 'multipart/form-data', request_body: request_body, http_method: Net::HTTP::Post)
       get_response(uri: uri, request: request)
     end
 
