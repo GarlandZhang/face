@@ -2,8 +2,9 @@
 
 Update: It's live! https://still-thicket-61571.herokuapp.com
   - Due to subscription API limits, please don't load too many images at once. I implemented a request recall cycle if the subscription limit is reached but Heroku times out after 30 seconds.
+  - Will update with a new subscription key :)
 
-Face is a machine powered web app to extract people and objects from your photos to categorize them by name. Face uses Microsoft Face API to detect and recognize faces from photos which is then stored in Ruby's Active Storage local service for further processing (using ImageMagick, Face also creates a profile picture by cropping out the detected face of each person). Other features include: search functionality by name and mutual/common friendships. SQLite database was used to persist the many objects' relationships. 
+Face is a machine powered web app to extract people and objects from your photos to categorize them by name. Face uses Microsoft Face API to detect and recognize faces from photos which is then stored in Ruby's Active Storage local service for further processing (using ImageMagick, Face also creates a profile picture by cropping out the detected face of each person). Other features include: search functionality by name and mutual/common friendships. PostgreSQL database was used as a backend store (since ActiveStorage is not allowed on Heroku due to persistence issues, I used the Imgur API to create unique image urls). 
 
 Goal: Ship this to production by migrating from SQLite to PostGres. 
 
