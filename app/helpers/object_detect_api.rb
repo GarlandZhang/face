@@ -1,6 +1,6 @@
 module ObjectDetectApi
   URL = 'vision/v2.0/analyze'
-  SUBSCRIPTION_KEY = '0f0c7750313442659facc6bbd506ab08'
+  SUBSCRIPTION_KEY = '9201aa054c0e4f6caf04b461d2044e73'
 
   class << self
     def object_tags(image)
