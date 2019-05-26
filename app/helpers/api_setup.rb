@@ -86,7 +86,7 @@ module ApiSetup
       uri
     end
 
-    def request_setup(request_uri:, request_type:, request_body:, subscription_key:, http_method: :get)
+    def request_setup(request_uri:, request_type:, request_body:, subscription_key:, http_method:)
       request = http_method.new(request_uri)
       request['Content-Type'] = "application/#{request_type}"
       request['Ocp-Apim-Subscription-Key'] = subscription_key
