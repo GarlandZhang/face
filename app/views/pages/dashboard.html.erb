@@ -8,7 +8,7 @@
 <%= link_to "Add image", add_image_path(@user)%>
 <h3>Images</h3>
 <% @images.each do |image| %>
-    <%= image_tag image.image.variant(resize: "200x200") %>
+    <img src="<%= image.url %>" style="width: 200px;">
 <% end %>
 
 <h3><%= @person_group.name %></h3>

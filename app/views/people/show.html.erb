@@ -1,5 +1,6 @@
 <%= link_to "back to dashboard", dashboard_path(@user) %>
 <div>
+<img src="<%= image.url %>" style="width: 100px;">
   <%= image_tag @avatar.variant(crop: "#{@person.face_width}x#{@person.face_height}+#{@person.face_offset_x}+#{@person.face_offset_y}",
                                 resize: "100x100") %>
 

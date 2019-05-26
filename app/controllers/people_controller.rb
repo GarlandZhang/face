@@ -20,7 +20,6 @@ class PeopleController < ApplicationController
     @person_group = PersonGroup.find(@person.person_group_id)
     @user = User.find(@person_group.user_id)
     @images = @person.user_images
-    @avatar = @person.avatar
     puts "relationships: #{@person.relationships.to_a}"
     @friends_and_degrees = get_friends_upto(person: @person)
   end
