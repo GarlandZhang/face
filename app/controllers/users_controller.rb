@@ -3,6 +3,7 @@ require 'net/http'
 class UsersController < ApplicationController
   def new
     @user = User.new
+    puts ImageStore.upload_image('')
   end
 
   def create
