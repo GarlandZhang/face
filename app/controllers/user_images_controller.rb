@@ -52,7 +52,7 @@ class UserImagesController < ApplicationController
   def extract_data_from_photo(photo)
     {
       "tags" => extract_tags_from_photo(photo.image_data),
-      "people" => extract_people_from_photo(photo.image_data)
+      "people" => extract_people_from_photo(photo)
     }
   end
 
@@ -62,15 +62,15 @@ class UserImagesController < ApplicationController
     tags['description']['tags'].map { |tag| ObjectTag.new(name: tag) }
   end
 
-  def extract_people_from_photo(image_data)
+  def extract_people_from_photo(photo)
     get_people(
       person_group: FaceApi.train_person_group(user.person_group), 
-      faces: FaceApi.detect_faces(image_data),
-      image_data: image_data,
+      faces: FaceApi.detect_faces(photo.image_data),
+      photo: photo,
     )
   end
 
-  def get_people(person_group:, faces:, image_data:)
+  def get_people(person_group:, faces:, photo:)
     new_ids = faces.map { |face| face['faceId'] }
     existing_ids = FaceApi.person_identities(person_group: person_group, face_ids: new_ids)
     people = []
@@ -81,7 +81,7 @@ class UserImagesController < ApplicationController
       end
     end
     new_ids.each do |new_id|
-      people << new_person(person_group: person_group, face: detected_face(faces: faces, target: new_id), image_data: image_data)
+      people << new_person(person_group: person_group, face: detected_face(faces: faces, target: new_id), photo: photo)
     end
     people
   end
@@ -95,15 +95,20 @@ class UserImagesController < ApplicationController
     person
   end
 
-  def new_person(person_group:, face:, image_data:)
-    person = to_person_from_cloud(person_group: person_group, face: face, image_data: image_data)
+  def new_person(person_group:, face:, photo:)
+    person = to_person_from_cloud(person_group: person_group, face: face, image_data: photo.image_data)
     face_rectangle = face['faceRectangle']
     person.face_width = face_rectangle['width']
     person.face_height = face_rectangle['height']
     person.face_offset_x = face_rectangle['left']
     person.face_offset_y = face_rectangle['top']
     person.last_face_id = face['faceId']
+    person.avatar_url = ImageStore.upload_image(normalize_avatar(person: person, photo: photo))
     person
+  end
+
+  def normalize_avatar(person:, photo:)
+    MiniMagick::Image.read(photo.image_data).crop("#{person.face_width}x#{person.face_height}+#{person.face_offset_x}+#{person.face_offset_y}").to_blob
   end
 
   def detected_face(faces:, target:)

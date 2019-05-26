@@ -1,9 +1,6 @@
 <%= link_to "back to dashboard", dashboard_path(@user) %>
-<div>
-<img src="<%= image.url %>" style="width: 100px;">
-  <%= image_tag @avatar.variant(crop: "#{@person.face_width}x#{@person.face_height}+#{@person.face_offset_x}+#{@person.face_offset_y}",
-                                resize: "100x100") %>
-
+<div>  
+  <img src="<%= @person.avatar_url %>" style= "width: 100px;">
   <h1><%= @person.name %></h1>
 </div>
 <br>
@@ -12,7 +9,7 @@
 <h3>Images</h3>
 <% @images.each do |image| %>
   <div>
-    <%= image_tag image.image.variant(resize: "200x200")%>
+    <img src="<%= image.url %>" style="width: 200px;">
     <%= link_to "See more", show_image_url(image) %>
   </div>
 <% end %>
