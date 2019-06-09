@@ -1,6 +1,6 @@
 module FaceApi
   URL = "https://westcentralus.api.cognitive.microsoft.com/face/v1.0/"
-  SUBSCRIPTION_KEY = '70feb6555ec0456f9b2a0732f03980bf'
+  SUBSCRIPTION_KEY = 'fb39dad3696042ca868ca1198da431ad'
 
   RESPONSE_CODES = { 
     200 => :success,
